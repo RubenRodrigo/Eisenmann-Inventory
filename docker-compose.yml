@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./eisenmann_inventory_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./eisenmann_inventory_backend/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=eisenmann_django
+      - POSTGRES_PASSWORD=eisenmann_django
+      - POSTGRES_DB=eisenmann_django_prodv
+
+volumes:
+  postgres_data:
