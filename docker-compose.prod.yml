@@ -3,7 +3,7 @@ version: '3.7'
 services:
   backend:
     build:
-      context: ./eisenmann_inventory_backend
+      context: ./eisenmann-backend
       dockerfile: Dockerfile.prod
     restart: always
     command: gunicorn eisenmann_inventory_backend.wsgi:application --bind 0.0.0.0:8000
