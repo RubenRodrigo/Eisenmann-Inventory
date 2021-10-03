@@ -1,10 +1,13 @@
+const baseUrl = '/usr/src/app'
+// const baseUrl = '/home/tkmiz/Documents/Projects/Eisenemann/eisenmann-inventory';
+
 module.exports = {
 	apps: [
 		{
 			name: 'eisenmann',
-			cwd: '/home/tkmiz/Documents/Projects/Eisenemann/eisenmann-inventory',
+			cwd: baseUrl,
 			script: 'npm',
-			args: 'start',
+			args: 'run dev',
 		},
 		// optionally a second project
 	],

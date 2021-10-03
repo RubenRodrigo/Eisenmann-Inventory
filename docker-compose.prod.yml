@@ -27,8 +27,12 @@ services:
 
   # frontend: 
   #   build: 
-  #     context: ./eisenmann-inventory
+  #     context: ./eisenmann-frontend
   #     dockerfile: Dockerfile.prod
+  #   ports: #This is used to map the container’s ports to the host machine.
+  #     - "3000:3000"
+  #   env_file:
+  #     - ./.env.prod
 
   nginx:
     build: ./nginx
@@ -40,6 +44,7 @@ services:
       - 1330:80
     depends_on:
       - backend
+      # - frontend
 
 volumes:
   postgres_data:
