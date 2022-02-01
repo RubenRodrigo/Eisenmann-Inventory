@@ -20,15 +20,3 @@ class Client(models.Model):
     def total_services(self):
         services = self.client_services.all().count()
         return services
-
-
-'''
-    def save(self, *args, **kwargs):
-        '' On save, update timestamps ''
-        if not self.id:
-            self.ultimo_servicio = timezone.now().date()
-        else:
-            self.ultimo_servicio = timezone.now().date()
-            self.servicio_totales = self.servicio_set.all().count()
-        return super(Cliente, self).save(*args, **kwargs)
-'''

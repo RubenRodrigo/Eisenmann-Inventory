@@ -47,6 +47,6 @@ services:
       # - frontend
 
 volumes:
-  postgres_data:
-  static_volume:
-  media_volume:
+  postgres_data: null
+  static_volume: null
+  media_volume: null

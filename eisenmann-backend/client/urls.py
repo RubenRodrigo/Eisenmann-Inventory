@@ -1,8 +1,16 @@
-from django.conf.urls import url
+# Django
+from django.urls import path, include
 
+# DRF
+from rest_framework.routers import DefaultRouter
+
+# Views
 from . import views
 
+
+router = DefaultRouter()
+router.register(r'client', views.ClientViewSet, basename="client")
+
 urlpatterns = [
-    url(r'^$', views.ListClients.as_view(), name='list_clients'),
-    url(r'^(?P<pk>[0-9]+)/$', views.DetailClient.as_view(), name='detail_client'),
+    path('', include(router.urls))
 ]

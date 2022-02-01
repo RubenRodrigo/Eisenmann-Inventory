@@ -5,7 +5,7 @@ from django.utils import timezone
 
 # Create your models here.
 from client.models import Client
-from product.models import Product, ProductStock
+from product.models.models import Product, ProductStock
 
 
 # Este modelo guarda el Servicio.

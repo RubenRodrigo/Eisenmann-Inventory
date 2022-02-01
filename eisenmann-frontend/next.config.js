@@ -1,6 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   env: {
-    NEXT_PUBLIC_api_url: "http://backend:8000/api",
+    API_URL: process.env.DJANGO_API_URL_ENV,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL_ENV,
   },
 }

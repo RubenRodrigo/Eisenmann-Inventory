@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from client.serializers import ClientSerializer
-from product.serializers import ProductSerializer, ProductStockSerializer
+from product.serializers.serializers import ProductSerializer, ProductStockSerializer
 from service.models import Service, ServiceProductDetail
 from employee.serializers import EmployeeSerializer
 

@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXT_PUBLIC_api_url;
+const baseUrl = process.env.API_URL;
 
 const fetchSinToken = (endpoint, data, method = 'GET') => {
 	const url = `${baseUrl}/${endpoint}`;
