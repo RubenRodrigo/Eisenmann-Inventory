@@ -1,10 +1,19 @@
 from django.conf.urls import url
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from . import views
 
+router = DefaultRouter()
+router.register(
+    r'service',
+    views.ServiceViewSet,
+    basename="service")
+router.register(
+    r'service_product',
+    views.ServiceProductViewSet,
+    basename="service_product")
+
 urlpatterns = [
-    url(r'^$', views.ListServices.as_view(), name='list_services'),
-    url(r'^(?P<pk>[0-9]+)/$', views.DetailService.as_view(), name='detail_service'),
-    url(r'^service_product/$', views.ListServiceProduct.as_view(), name='list_service_product'),
-    url(r'^service_product/(?P<pk>[0-9]+)/$', views.DetailServiceProduct.as_view(), name='detail_service_product'),
+    path('', include(router.urls))
 ]

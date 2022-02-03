@@ -10,7 +10,7 @@ from product.serializers.types_serializer import TypeSerializer, UnitSerializer
 
 class TypeViewSet(viewsets.ModelViewSet):
     serializer_class = TypeSerializer
-    queryset = type.objects.all()
+    queryset = Type.objects.all()
 
 
 class UnitViewSet(viewsets.ModelViewSet):

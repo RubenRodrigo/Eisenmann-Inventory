@@ -7,7 +7,7 @@ from .product import ProductStock
 
 
 class ProductEntry(models.Model):
-    product = models.ForeignKey(
+    product_stock = models.ForeignKey(
         ProductStock, related_name='product_entry', on_delete=models.CASCADE, null=True, blank=True)
     init_stock = models.IntegerField(default=0, null=True, blank=True)
     stock = models.IntegerField(default=0, null=True, blank=True)

@@ -1,3 +1,3 @@
-from .entry_serializer import ProductEntrySerializer
-from .product_serializer import ProductSerializer, ProductStockSimpleSerializer, ProductDetailedSerializer, ProductStockSerializer, ProductStockRealSerializer
-from .entry_serializer import ProductEntrySerializer
+from .product_entry_serializer import ProductEntrySerializer
+from .types_serializer import TypeSerializer, UnitSerializer
+from .product_serializer import ProductSerializer,  ProductDetailedSerializer, ProductStockSerializer, ProductStockRealSerializer

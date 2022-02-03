@@ -1,28 +1,41 @@
 from rest_framework import serializers
-
-from client.serializers import ClientSerializer
-from product.serializers.serializers import ProductSerializer, ProductStockSerializer
-from service.models import Service, ServiceProductDetail
+from product.serializers.product_serializer import ProductStockSerializer
 from employee.serializers import EmployeeSerializer
+from service.models.service_product import ServiceProduct
 
 
 # Serializers para los servicios
 
 
 class ServiceProductSerializer(serializers.ModelSerializer):
-    product_detail = ProductStockSerializer(source='product', read_only=True)
+    product_stock_detail = ProductStockSerializer(
+        source='product_stock', read_only=True)
     employee_detail = EmployeeSerializer(source='employee', read_only=True)
 
+    class Meta:
+        model = ServiceProduct
+        fields = [
+            'id',
+            'service',
+            'employee',
+            'employee_detail',
+            'product_stock',
+            'product_stock_detail',
+            'description',
+            'quantity',
+            'total_cost'
+        ]
+        read_only_fields = ['total_cost']
+
     def validate(self, data):
-        print(data)
-        if data['quantity'] > data['product'].total_stock:
+        if data['quantity'] > data['product_stock'].total_stock:
             raise serializers.ValidationError("no_stock")
         return data
 
     def create(self, validated_data):
         quantity = validated_data['quantity']
-        product = validated_data['product']
-        product_entries = product.product_entry.all().order_by('created_at')
+        product_stock = validated_data['product_stock']
+        product_entries = product_stock.product_entry.all().order_by('created_at')
 
         new_stock = quantity
 
@@ -40,7 +53,7 @@ class ServiceProductSerializer(serializers.ModelSerializer):
                 product_entry.save()
                 break
 
-        return ServiceProductDetail.objects.create(**validated_data)
+        return ServiceProduct.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.service = validated_data.get('service', instance.service)
@@ -59,40 +72,3 @@ class ServiceProductSerializer(serializers.ModelSerializer):
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.save()
         return instance
-
-    class Meta:
-        model = ServiceProductDetail
-        fields = ['id', 'service', 'employee', 'employee_detail', 'product',
-                  'product_detail', 'description', 'quantity', 'total_cost']
-        read_only_fields = ['total_cost']
-
-
-class ServiceSerializer(serializers.ModelSerializer):
-    # service_products = ServiceProductSerializer(many=True, read_only=True)
-    service_products = serializers.SerializerMethodField()
-    client_detail = ClientSerializer(source='client', read_only=True)
-
-    class Meta:
-        model = Service
-        fields = [
-            # Create or Update Fields
-            'id',
-            'client',
-            'code',
-            'estimated_price',
-            'init_date',
-            'end_date',
-            'observations',
-            'name',
-            'state',
-            # Read only fields
-            # Nested Fields
-            'service_products',
-            'client_detail',
-            # Attribute Fields
-            'final_price',
-        ]
-
-    def get_service_products(self, instance):
-        data = instance.service_products.all().order_by('-id')
-        return ServiceProductSerializer(data, many=True, read_only=True).data

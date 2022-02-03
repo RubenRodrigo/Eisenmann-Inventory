@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 
 def add_months(sourcedate, months):
@@ -7,4 +7,4 @@ def add_months(sourcedate, months):
     year = sourcedate.year + month // 12
     month = month % 12 + 1
     day = 1
-    return datetime.date(year, month, day)
+    return date(year, month, day)

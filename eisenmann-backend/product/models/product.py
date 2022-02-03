@@ -1,5 +1,6 @@
+# Python
+from datetime import datetime
 # Django
-from django.utils import timezone
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -41,8 +42,8 @@ class ProductStock(models.Model):
         Product, related_name='product_stock', on_delete=models.CASCADE, null=True, blank=True)
     init_stock = models.IntegerField(default=0, null=True, blank=True)
     real_stock = models.IntegerField(default=0, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
     state = models.BooleanField(default=False)
     medium_value = models.IntegerField(default=30, null=True, blank=True)
     minium_value = models.IntegerField(default=15, null=True, blank=True)
@@ -88,7 +89,7 @@ class ProductStock(models.Model):
 
     def clean(self):
         if not self.id:
-            today = timezone.now()
+            today = datetime.now()
             queryset = ProductStock.objects.filter(product=self.product).filter(
                 created_at__year=today.year, created_at__month=today.month)
             if queryset.exists():
@@ -99,4 +100,8 @@ class ProductStock(models.Model):
         product_entry = self.product_entry.all()
         total = sum([item.stock for item in product_entry])
         self.stock_total = total
+
+        if self.created_at is None:
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         return super(ProductStock, self).save(*args, **kwargs)
