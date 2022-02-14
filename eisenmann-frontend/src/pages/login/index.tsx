@@ -1,136 +1,121 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
 import type { NextPage } from 'next'
-import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
-import { signIn } from 'next-auth/react';
+import { Box, Container, Paper, Typography, Alert } from '@mui/material';
+import Image from 'next/image';
+import Logo from '@/public/images/logo.png'
+import WelcomeSVG from '@/public/images/welcome.svg'
+import { useTheme, alpha } from '@mui/material/styles';
+import { LoginForm } from '@/components/Login/LoginForm';
 
-function Copyright() {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://mui.com/">
-				Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
+const SideSpace = 440
 
+const Index: NextPage = () => {
 
-interface Props {
-	children?: React.ReactNode;
-}
-
-interface FormValues {
-	password: string;
-	email: string;
-}
-
-type HandleInputChange = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
-
-const AppContent = (props: Props) => {
-
-	const [formValues, setFormValues] = useState<FormValues>({
-		password: '',
-		email: ''
-	});
-
-	const handleChange = ({ target: { name, value } }: HandleInputChange) => {
-		setFormValues({
-			...formValues,
-			[name]: value
-		})
-	}
-
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const result: any = await signIn('credentials', {
-			redirect: false,
-			email: formValues.email,
-			password: formValues.password,
-		})
-
-		if (result && !result.error) {
-			console.log(result);
-		} else {
-			console.log(result);
-		}
-	}
+	const theme = useTheme();
 
 	return (
-		<Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<div >
-				<Avatar >
-					<LockOutlined />
-				</Avatar>
-				<Typography component="h1" variant="h5">
-					Sign in
-				</Typography>
-				<form onSubmit={handleSubmit}>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
-						name="email"
-						value={formValues.email}
-						onChange={handleChange}
-						autoComplete="email"
-						autoFocus
-					/>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						label="Password"
-						name="password"
-						value={formValues.password}
-						onChange={handleChange}
-						type="password"
-						id="password"
-						autoComplete="current-password"
-					/>
-					<FormControlLabel
-						control={<Checkbox value="remember" color="primary" />}
-						label="Remember me"
-					/>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
+		<Box
+			component="main"
+			sx={{ display: 'flex' }}
+		>
+			<Box
+				sx={{
+					flex: '0 1 auto',
+					width: SideSpace,
+					backgroundColor: '#1c1c1c',
+					position: 'fixed',
+					top: 0,
+					bottom: 0,
+					left: 0,
+				}}
+			>
+				<Box
+					sx={{
+						overflow: 'hidden',
+						position: 'relative',
+						width: '100%',
+						height: '100%'
+					}}
+				>
+					<Box
+						sx={{
+							overflow: 'auto',
+							position: 'absolute',
+							width: '100%',
+							height: '100%',
+							display: 'flex',
+							alignItems: 'center',
+						}}
 					>
-						Sign In
-					</Button>
-					<Grid container>
-						<Grid item xs>
-							<Link href="#" variant="body2">
-								Forgot password?
-							</Link>
-						</Grid>
-						<Grid item>
-							<Link href="#" variant="body2">
-								{"Don't have an account? Sign Up"}
-							</Link>
-						</Grid>
-					</Grid>
-				</form>
-			</div>
-			<Box mt={8}>
-				<Copyright />
+						<Box>
+							{/* <Box sx={{ mb: 8 }}>
+								<Image
+									src={Logo}
+									alt="GreenPure"
+									layout="responsive"
+								/>
+							</Box> */}
+							<Box sx={{ px: 8 }}>
+								<Typography component="h1" variant="h4" color='secondary.light' sx={{ fontWeight: 'bold' }}>
+									Hola, bienvenido de vuelta!
+								</Typography>
+							</Box>
+							<Image
+								src={WelcomeSVG}
+								alt="Welcome"
+								layout="responsive"
+							/>
+						</Box>
+					</Box>
+				</Box>
 			</Box>
-		</Container>
+			<Box
+				sx={{
+					flex: '0 1 auto',
+					paddingLeft: `${SideSpace}px`,
+					width: '100%',
+					minHeight: '100vh',
+				}}
+			>
+				<Box
+					sx={{
+						height: '100%',
+						display: 'flex',
+						background: `linear-gradient(to right bottom, ${theme.palette.secondary.dark} 50%, ${theme.palette.primary.main} 50%)`
+					}}
+				>
+					<Container
+						maxWidth="sm"
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							height: '100%',
+						}}
+					>
+						<Paper
+							sx={(theme) => ({
+								my: 4,
+								p: 5,
+							})}
+							elevation={2}
+						>
+							<Box sx={{ mb: 4 }}>
+								<Typography component="h1" variant="h4" align="center">
+									Iniciar Sesión
+								</Typography>
+								<Typography variant="subtitle1" color="text.secondary" align="center">
+									Llena los campos para iniciar sesión.
+								</Typography>
+							</Box>
+							<LoginForm />
+							<Box sx={{ my: 2, }}>
+								<Alert severity="warning">Usa demo@example.com y contraseña Eisenmann_1</Alert>
+							</Box>
+						</Paper>
+					</Container>
+				</Box>
+			</Box>
+		</Box >
 	);
 }
 
-const Index: NextPage = (props) => {
-	return (
-		<AppContent {...props} />
-	);
-}
 export default Index

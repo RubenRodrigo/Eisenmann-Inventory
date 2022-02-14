@@ -2,14 +2,14 @@ import axios from 'axios';
 
 const API_ENDPOINT = process.env.API_URL
 
-export const axiosInstanceServerSide = (session?: any, timeout = 5000) => {
+export const axiosInstanceServerSide = (accessToken: any, timeout = 5000) => {
 
   const axiosInstance = axios.create({
     baseURL: API_ENDPOINT,
     timeout: timeout,
     headers: {
-      Authorization: session
-        ? 'Bearer ' + session.accessToken
+      Authorization: accessToken
+        ? 'Bearer ' + accessToken
         : '',
       'Content-Type': 'application/json',
       accept: 'application/json',
@@ -32,7 +32,6 @@ export const axiosInstanceServerSide = (session?: any, timeout = 5000) => {
       }
 
       if (
-        error.response.data.code === 'token_not_valid' &&
         error.response.status === 401 &&
         error.response.statusText === 'Unauthorized'
       ) {
@@ -49,13 +48,13 @@ export const axiosInstanceServerSide = (session?: any, timeout = 5000) => {
 }
 
 
-// export const axiosInstanceFetch = (session:any, timeout = 5000) => {
+// export const axiosInstanceFetch = (any, timeout = 5000) => {
 //   const axiosInstance = axios.create({
 //     baseURL: API_ENDPOINT,
 //     timeout: timeout,
 //     headers: {
-//       Authorization: session
-//         ? 'Bearer ' + session.accessToken
+//       Authorization:
+//         ? 'Bearer ' + accessToken
 //         : '',
 //       'Content-Type': 'application/json',
 //       accept: 'application/json',
@@ -86,13 +85,13 @@ export const axiosInstanceServerSide = (session?: any, timeout = 5000) => {
 //         error.response.status === 401 &&
 //         error.response.statusText === 'Unauthorized'
 //       ) {
-//         const newSession = await getSession()
+//         const new= await get)
 //         try {
-//           if (newSession) {
+//           if (new {
 //             axiosInstance.defaults.headers['Authorization'] =
-//               'Bearer ' + newSession.accessToken;
+//               'Bearer ' + newaccessToken;
 //             originalRequest.headers['Authorization'] =
-//               'Bearer ' + newSession.accessToken;
+//               'Bearer ' + newaccessToken;
 
 //             return axiosInstance(originalRequest);
 //           } else {

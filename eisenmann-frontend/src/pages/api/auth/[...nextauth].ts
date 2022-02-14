@@ -4,141 +4,143 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { axiosInstanceServerSide } from "../../../helpers/axiosInstance";
 import jwt from 'jsonwebtoken';
+import { getAccessToken } from "src/services/login";
 
 
-async function refreshAccessToken(token: any) {
-  // console.log("10 - REFRESH", token);
-  try {
+// async function refreshAccessToken(token: any) {
+//     try {
 
-    const now = Math.ceil(Date.now() / 1000);
-    const response = await axiosInstanceServerSide().post('/token/',
-      {
-        refresh_token: token.refreshToken
-      }
-    );
+//         const now = Math.ceil(Date.now() / 1000);
+//         const response = await axiosInstanceServerSide().post('/token/',
+//             {
+//                 refresh_token: token.refreshToken
+//             }
+//         );
 
-    const refreshedTokens = response.data
-    if (response.status !== 200) { throw refreshedTokens }
+//         const refreshedTokens = response.data
+//         if (response.status !== 200) { throw refreshedTokens }
 
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      token_expire: refreshedTokens.expires_in + now,
-      token_type: refreshedTokens.token_type,
-      scope: refreshedTokens.scope,
-      refreshToken: refreshedTokens.refresh_token
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const { response } = error
-      console.log("REFRESH TOKEN FAILED", response?.data)
-    }
-    return {
-      ...token, error: "RefreshAccessTokenError",
-    }
-  }
-}
+//         return {
+//             ...token,
+//             accessToken: refreshedTokens.access_token,
+//             token_expire: refreshedTokens.expires_in + now,
+//             token_type: refreshedTokens.token_type,
+//             scope: refreshedTokens.scope,
+//             refreshToken: refreshedTokens.refresh_token
+//         }
+//     } catch (error) {
+//         if (axios.isAxiosError(error)) {
+//             const { response } = error
+//             console.log("REFRESH TOKEN FAILED", response?.data)
+//         }
+//         return {
+//             ...token, error: "RefreshAccessTokenError",
+//         }
+//     }
+// }
 
 export default NextAuth({
-  // Configure one or more authentication providers
-  providers: [
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: 'Credentials',
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
-      },
-      async authorize(credentials: any) {
-        try {
-          const response = await axiosInstanceServerSide().post('/token/',
-            {
-              email: credentials.email,
-              password: credentials.password,
+    // Configure one or more authentication providers
+    providers: [
+        CredentialsProvider({
+            // The name to display on the sign in form (e.g. 'Sign in with...')
+            name: 'Credentials',
+            credentials: {
+                email: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials: any) {
+                try {
+
+                    const response = await getAccessToken(
+                        {
+                            credentials: {
+
+                                email: credentials.email,
+                                password: credentials.password,
+                            }
+                        }
+                    )
+
+                    const user = response.data
+                    console.log(user);
+                    console.log('CREDENTIALS ACCESS TOKEN ----> ' + JSON.stringify(user.access, null, 2));
+
+                    if (user) {
+                        return {
+                            status: 'success',
+                            data: user
+                        }
+                    }
+
+                    return null
+
+                } catch (error) {
+                    if (axios.isAxiosError(error)) {
+                        const { response } = error
+                        const errorMessage = response?.data.detail
+
+                        throw new Error(errorMessage + '&email=' + credentials.email)
+                    } else {
+                        throw new Error('Error inesperado')
+                    }
+                    // Redirecting to the login page with error messsage in the URL
+                }
             }
-          )
-          const user = response.data
-          console.log(user);
+        }),
+    ],
+    callbacks: {
+        /*
+        |--------------------------------------------------------------------------
+        | Callback : JWT
+        |--------------------------------------------------------------------------
+        */
+        async jwt({ token, account, user }) {
+            // Persist the OAuth access_token to the token right after signin
+            // console.log('token', token);
+            // console.log('account', account);
+            // console.log('user', user);
 
-          console.log('CREDENTIALS ACCESS TOKEN ----> ' + JSON.stringify(user.access, null, 2));
+            if (user && account) {
+                const UserCredentials: any = user.data
+                const dec: any = jwt.decode(UserCredentials.access, { complete: true });
+                token.accessToken = UserCredentials.access
+                token.refreshToken = UserCredentials.refresh
+                token.accessTokenExpires = dec.payload.exp
+                token.userId = dec.payload.user_id
 
-          if (user) {
-            return {
-              status: 'success',
-              data: user
+                return token
             }
-          }
 
-          return null
+            return token
+        },
+        /*
+        |--------------------------------------------------------------------------
+        | Callback : Session
+        |--------------------------------------------------------------------------
+        */
+        async session({ session, token }) {
 
-        } catch (error) {
-          if (axios.isAxiosError(error)) {
-            const { response } = error
-            console.log(response);
-            const errorMessage = response?.data.detail
-            throw new Error(errorMessage + '&email=' + credentials.email)
-          } else {
-            throw new Error('Error inesperado')
-          }
-          // Redirecting to the login page with error messsage in the URL
-        }
-      }
-    }),
-  ],
-  callbacks: {
-    /*
-    |--------------------------------------------------------------------------
-    | Callback : JWT
-    |--------------------------------------------------------------------------
-    */
-    async jwt({ token, account, user }) {
-      // Persist the OAuth access_token to the token right after signin
-      // console.log('token', token);
-      // console.log('account', account);
-      // console.log('user', user);
+            // Store Access Token to Session
+            session.refreshToken = token.refreshToken as string
+            session.accessToken = token.accessToken as string
+            session.accessTokenExpires = token.accessTokenExpires as string
 
-      if (user && account) {
-        const UserCredentials: any = user.data
-        const dec: any = jwt.decode(UserCredentials.access, { complete: true });
-        token.accessToken = UserCredentials.access
-        token.refreshToken = UserCredentials.refresh
-        token.accessTokenExpires = dec.payload.exp
-        token.userId = dec.payload.user_id
+            session.user = {
+                ...session.user,
+                'id': token.userId as number
+            }
 
-        return token
-      }
+            // console.log("180 - Session", token);
 
-      return token
+            if (token.error) {
+                session.error = token.error as string
+            }
+            return session
+        },
     },
-    /*
-    |--------------------------------------------------------------------------
-    | Callback : Session
-    |--------------------------------------------------------------------------
-    */
-    async session({ session, token }) {
-      const dec: any = jwt.decode(token.accessToken as string, { complete: true });
-
-      // Store Access Token to Session
-      session.refreshToken = token.refreshToken
-      session.accessToken = token.accessToken
-      session.accessTokenExpires = token.accessTokenExpires
-
-      session.user = {
-        ...session.user,
-        'id': token.userId as number
-      }
-
-      // console.log("180 - Session", token);
-
-      if (token.error) {
-        session.error = token.error
-      }
-      console.log(session);
-      return session
+    pages: {
+        signIn: '/login'
     },
-  },
-  pages: {
-    signIn: '/login'
-  },
-  secret: process.env.SECRET,
+    secret: process.env.SECRET,
 })
