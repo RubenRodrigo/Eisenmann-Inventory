@@ -1,11 +1,10 @@
 from datetime import datetime
-# Django
-
+# Django Filters
+from django_filters import rest_framework as filters
 # DRF
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.decorators import action
 
 # DRF_YASG
@@ -16,14 +15,24 @@ from product.models import Product, ProductStock
 
 # Serializers
 from product.serializers import ProductDetailedSerializer, ProductSerializer, ProductStockSerializer
-from product.serializers.product_serializer import ProductQuerySerializer, ProductStockDetailedSerializer, ProductStockRealSerializer
+from product.serializers.product_serializer import ProductStockQuerySerializer, ProductStockDetailedSerializer, ProductStockRealSerializer
+
+
+class ProductFilter(filters.FilterSet):
+
+    class Meta:
+        model = Product
+        fields = ['state', 'type', 'unit']
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     """
-    Product View
+    Product View. If there are any filter_query, it will list all Product's
     """
     queryset = Product.objects.all()
+    filterset_class = ProductFilter
+    ordering_fields = ['created_at', 'type', 'unit', 'code']
+    ordering = ['created_at']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -39,7 +48,7 @@ class ProductStockViewSet(viewsets.ModelViewSet):
     queryset = ProductStock.objects.all()
 
     @swagger_auto_schema(
-        query_serializer=ProductQuerySerializer,
+        query_serializer=ProductStockQuerySerializer,
     )
     def list(self, request):
         """
@@ -83,17 +92,3 @@ class ProductStockViewSet(viewsets.ModelViewSet):
             return ProductStockSerializer
         else:
             return ProductStockDetailedSerializer
-
-
-# class CreateProductStockReal(APIView):
-#     """
-#     Create a new product_stock real.
-#     """
-
-#     def post(self, request, format=None):
-#         serializer = ProductStockRealSerializer(
-#             data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

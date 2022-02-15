@@ -8,6 +8,8 @@ from service.models.service_product import ServiceProduct
 
 
 class ServiceProductSerializer(serializers.ModelSerializer):
+    """
+    """
     product_stock_detail = ProductStockSerializer(
         source='product_stock', read_only=True)
     employee_detail = EmployeeSerializer(source='employee', read_only=True)
@@ -18,12 +20,14 @@ class ServiceProductSerializer(serializers.ModelSerializer):
             'id',
             'service',
             'employee',
-            'employee_detail',
-            'product_stock',
-            'product_stock_detail',
             'description',
             'quantity',
-            'total_cost'
+            'total_cost',
+            'product_stock',
+            'created_at',
+            'updated_at',
+            'product_stock_detail',
+            'employee_detail',
         ]
         read_only_fields = ['total_cost']
 

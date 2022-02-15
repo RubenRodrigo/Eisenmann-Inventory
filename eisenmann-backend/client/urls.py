@@ -10,6 +10,8 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'client', views.ClientViewSet, basename="client")
+router.register(r'document_type', views.DocumentTypeViewSet,
+                basename="document_type")
 
 urlpatterns = [
     path('', include(router.urls))

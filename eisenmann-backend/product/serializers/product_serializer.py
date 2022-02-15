@@ -15,7 +15,7 @@ from utils.date_utils import add_months
 
 
 #################################### QUERY SERIALIZERS ####################################
-class ProductQuerySerializer(serializers.Serializer):
+class ProductStockQuerySerializer(serializers.Serializer):
     year = serializers.IntegerField(required=False)
     month = serializers.IntegerField(required=False)
 
@@ -36,6 +36,7 @@ class ProductBaseSerializer(serializers.ModelSerializer):
             'code',
             'name',
             'description',
+            'state',
 
             # Read only Fields
             'created_at',
@@ -58,17 +59,14 @@ class ProductStockBaseSerializer(serializers.ModelSerializer):
             'init_stock',
             'real_stock',
             'state',
-            'medium_value',
-            'minium_value',
-            'stock_total',
-
+            'medium_stock',
+            'minium_stock',
             # Read only fields
             'created_at',
             'updated_at',
             # Attribute Fields
             'total_stock',
-            'total_stock_entries',
-            'total_stock_price',
+            'total_price',
             'difference_stock',
             'current_price',
         ]

@@ -4,12 +4,20 @@ from django.utils import timezone
 
 # Create your models here.
 from client.models import Client
+from core.models.BaseModel import BaseModel
+from user.models import CustomUser
 
 
 # Este modelo guarda el Servicio.
-class Service(models.Model):
+class Service(BaseModel):
     client = models.ForeignKey(
         Client,
+        related_name='service',
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+    user = models.ForeignKey(
+        CustomUser,
         related_name='service',
         on_delete=models.SET_NULL,
         null=True, blank=True
@@ -24,13 +32,6 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        ''' On save, update timestamps '''
-        if not self.id:
-            self.init_date = timezone.now().date()
-        self.end_date = timezone.now().date()
-        return super(Service, self).save(*args, **kwargs)
 
     @property
     def final_price(self):
