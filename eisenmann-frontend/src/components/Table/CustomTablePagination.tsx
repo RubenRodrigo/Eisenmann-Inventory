@@ -1,12 +1,20 @@
-import { ProductContext } from '@/context/ProductContext';
-import { TablePagination } from '@mui/material'
+import React, { ChangeEvent } from 'react'
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, useContext } from 'react'
+import { TablePagination } from '@mui/material'
 
-export const CustomTablePagination = () => {
+interface Props {
+	count: number;
+	isLoading: boolean;
+	page: number;
+	rowsPerPage: number;
+	rowsPerPageOptions: number[]
+}
+
+export const CustomTablePagination = (props: Props) => {
+
+	const { isLoading, rowsPerPage, page, count, rowsPerPageOptions } = props
 
 	const router = useRouter()
-	const { products: data, isLoading } = useContext(ProductContext)
 
 	const handleChangePage = (event: unknown, newPage: number) => {
 		router.push({
@@ -33,11 +41,11 @@ export const CustomTablePagination = () => {
 			{
 				!isLoading &&
 				<TablePagination
-					rowsPerPageOptions={[5, 10, 15]}
+					rowsPerPageOptions={rowsPerPageOptions}
 					component="div"
-					count={data.count}
-					rowsPerPage={data.countItemsOnPage}
-					page={data.current - 1}
+					count={count}
+					rowsPerPage={rowsPerPage}
+					page={page}
 					onPageChange={handleChangePage}
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>

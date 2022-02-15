@@ -1,27 +1,37 @@
-import { alpha } from '@mui/material/styles';
+// React
+import { useEffect, useRef } from 'react';
+// NextJS
+import { useRouter } from 'next/router';
+// Mui
 import { Box, Checkbox, TableHead, TableRow, TableSortLabel } from "@mui/material";
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { alpha } from '@mui/material/styles';
 import { visuallyHidden } from '@mui/utils';
+// Interfaces
 import { HeadCell, Order } from '@/interfaces/TableInterface';
-import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
 
-interface TableHeadProps<T> {
+interface Props<T> {
+	headCells: readonly HeadCell<T>[]
 	numSelected: number;
-	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof T) => void;
-	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	order: Order;
 	orderBy: string;
 	rowCount: number;
-	headCells: readonly HeadCell<T>[]
+	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof T) => void;
+	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const CustomTableHead = <T,>(props: TableHeadProps<T>) => {
+export const CustomTableHead = <T,>(props: Props<T>) => {
 
 	const router = useRouter();
 	const isMounted = useRef(false)
-	const { onSelectAllClick, order, orderBy, numSelected, rowCount, headCells, onRequestSort } =
-		props;
+	const {
+		headCells,
+		numSelected,
+		order, orderBy,
+		rowCount,
+		onRequestSort,
+		onSelectAllClick,
+	} = props;
 
 	const createSortHandler = (property: keyof T | 'actions') => (event: React.MouseEvent<unknown>) => {
 		if (property !== 'actions') {

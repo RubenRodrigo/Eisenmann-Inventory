@@ -2,14 +2,6 @@ import { Pagination } from "./Pagination";
 import { ProductType } from "./ProductType";
 import { ProductUnit } from "./ProductUnit";
 
-export interface ProductData {
-	calories: number;
-	carbs: number;
-	fat: number;
-	name: string;
-	protein: number;
-}
-
 export interface Product {
 	id: number;
 	type: number;

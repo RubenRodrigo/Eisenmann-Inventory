@@ -1,52 +1,49 @@
+// Mui
 import Box from '@mui/material/Box';
-import { HeadCell } from '@/interfaces/TableInterface';
-import { Product, ProductResponse } from '@/interfaces/Products';
+import TableContainer from '@mui/material/TableContainer';
+// Interfaces
+import { Pagination } from '@/interfaces/Pagination';
+import { TableContainerHandler } from '@/interfaces/TableInterface';
+// Custom Hooks
 import { useOrderTable } from '@/hooks/useOrderTable';
 import { useSelectRowTable } from '@/hooks/useSelectRowTable';
-import { ProductContext } from '@/context/ProductContext';
-import { useContext } from 'react';
-import { createTableContext } from '@/context/TableContext';
 
-interface Props {
-	children: () => JSX.Element;
-	headCells: readonly HeadCell<Product>[];
-	products: ProductResponse;
+interface Props<T> {
+	orderDefault: keyof T;
+	data: Data<T>;
+	children?: (args: TableContainerHandler<T>) => JSX.Element
+}
+interface Data<T> extends Pagination {
+	results: T[]
 }
 
-const { Provider } = createTableContext<Product>();
+export const CustomTableContainer = <T extends { id: number },>({ orderDefault, children, data }: Props<T>) => {
 
-export const CustomTableContainer = ({ headCells, children }: Props) => {
-	const { products: data, isLoading } = useContext(ProductContext)
-
-	const { order, orderBy, handleRequestSort } = useOrderTable<Product>('created_at')
-	const { selected, handleSelectAllClick, handleSelectOneClick, isSelected } = useSelectRowTable<Product>(data.results)
+	const { order, orderBy, handleRequestSort } = useOrderTable<T>(orderDefault)
+	const { selected, handleSelectAllClick, handleSelectOneClick, isSelected } = useSelectRowTable<T>(data.results)
 
 	// // Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
 		data.current - 1 > 0 ? Math.max(0, data.current * data.countItemsOnPage - data.count) : 0;
 
-
 	return (
-		<Provider
-			value={{
-				order,
-				orderBy,
-				handleRequestSort,
-				selected,
-				handleSelectOneClick,
-				handleSelectAllClick,
-				isSelected,
-				emptyRows,
-				headCells
-			}}
-		>
-			<Box sx={{ width: '100%' }}>
+		<Box sx={{ width: '100%' }}>
+			<TableContainer>
 				{
-					children({
-
-					})
+					children && children(
+						{
+							emptyRows,
+							order,
+							orderBy,
+							selected,
+							handleSelectAllClick,
+							handleSelectOneClick,
+							handleRequestSort,
+							isSelected,
+						}
+					)
 				}
-			</Box>
-		</Provider>
+			</TableContainer>
+		</Box>
 	);
 }

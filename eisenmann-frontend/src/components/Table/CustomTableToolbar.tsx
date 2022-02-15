@@ -4,11 +4,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 interface CustomTableToolbarProps {
+	name: string;
 	numSelected: number;
 }
 
 export const CustomTableToolbar = (props: CustomTableToolbarProps) => {
-	const { numSelected } = props;
+	const { name, numSelected } = props;
 
 	return (
 		<Toolbar
@@ -37,7 +38,7 @@ export const CustomTableToolbar = (props: CustomTableToolbarProps) => {
 					id="tableTitle"
 					component="div"
 				>
-					Nutrition
+					{name}
 				</Typography>
 			)}
 			{numSelected > 0 ? (

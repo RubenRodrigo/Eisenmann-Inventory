@@ -1,15 +1,28 @@
+// NodeJS
+import { ParsedUrlQuery } from "querystring";
+
+// React
 import { ReactElement, useEffect, useState } from "react";
+
+// NextJS
+import { useRouter } from "next/router";
+// NextAuth
+import { useSession } from "next-auth/react";
+
+// Mui
+import { Box, Button, Paper } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+
+// Custom Components
 import { Header } from "@/components/Header";
 import { Layout } from "@/components/Layout";
-import { Box, Button, Paper, Typography } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import { Product, ProductResponse } from "@/interfaces/Products";
 import { TableProduct } from "@/components/Products/TableProduct";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+
+// Interfaces
+import { ProductResponse } from "@/interfaces/Products";
+
+// Services
 import { getProductList } from "src/services/products";
-import { HeadCell } from "@/interfaces/TableInterface";
-import { ProductContext } from "@/context/ProductContext";
 
 const initialState = {
 	count: 0,
@@ -21,8 +34,6 @@ const initialState = {
 	results: []
 }
 
-const { Provider } = ProductContext;
-
 const Index = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [products, setProducts] = useState<ProductResponse>(initialState)
@@ -31,29 +42,28 @@ const Index = () => {
 	const router = useRouter()
 	const query = router.query
 
+	// TODO: Create a Custom Hook which handles the state
+	const getData = async (accessToken: string, queryParams: string) => {
+		setIsLoading(true)
+		try {
+			const res = await getProductList({ token: accessToken, queryParams: `?${queryParams}` })
+			const data: ProductResponse = res.data
+			setProducts(data)
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
 	useEffect(() => {
 		if (status === 'authenticated') {
 			if (session) {
 				if (session.error) {
 					console.log('Error');
 				} else {
-
-					let queryParams = '';
-
-					if (query.page) queryParams = `page=${query.page}&`
-					if (query.page_size) queryParams = `${queryParams}page_size=${query.page_size}&`
-					if (query.ordering) queryParams = `${queryParams}ordering=${query.ordering}&`
-
-					setIsLoading(true)
-					getProductList({ token: session.accessToken, queryParams: `?${queryParams}` })
-						.then((res) => {
-							const data: ProductResponse = res.data
-							setProducts(data)
-						})
-						.catch(err => {
-							console.log(err);
-						})
-						.finally(() => setIsLoading(false))
+					const queryParams = getQueryParams(query)
+					getData(session.accessToken, queryParams)
 				}
 			}
 			if (session === null) {
@@ -62,60 +72,31 @@ const Index = () => {
 		}
 	}, [status, session, query])
 
-	const headCells: readonly HeadCell<Product>[] = [
-		{
-			id: 'name',
-			numeric: false,
-			disablePadding: true,
-			label: 'Producto',
-			isAllowed: false,
-		},
-		{
-			id: 'created_at',
-			numeric: true,
-			disablePadding: false,
-			label: 'Fecha de Creación',
-			isAllowed: true,
-		},
-		{
-			id: 'total_price',
-			numeric: true,
-			disablePadding: false,
-			label: 'Precio Total',
-			isAllowed: true,
-		},
-	];
-
 	return (
 		<Box>
-			<Provider value={{
-				products,
-				setProducts,
-				isLoading
-			}}>
-				<Header title="Productos">
-					<Button
-						variant="contained"
-						startIcon={<AddIcon />}
-						sx={{
-							fontWeight: 'bold',
-							textTransform: 'none',
-							boxShadow: 0,
-						}}
-					>Nuevo Producto</Button>
-				</Header>
-				<Box>
-					<Paper
-						elevation={0}
-						sx={{ p: 2 }}
-					>
 
-						<TableProduct
-							headCells={headCells}
-						/>
-					</Paper>
-				</Box>
-			</Provider>
+			<Header title="Productos">
+				<Button
+					variant="contained"
+					startIcon={<AddIcon />}
+					sx={{
+						fontWeight: 'bold',
+						textTransform: 'none',
+						boxShadow: 0,
+					}}
+				>Nuevo Producto</Button>
+			</Header>
+			<Box>
+				<Paper
+					elevation={0}
+					sx={{ p: 2 }}
+				>
+					<TableProduct
+						isLoading={isLoading}
+						data={products}
+					/>
+				</Paper>
+			</Box>
 		</Box>
 	)
 };
@@ -129,3 +110,13 @@ Index.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default Index;
+
+const getQueryParams = (query: ParsedUrlQuery) => {
+	let queryParams = '';
+
+	if (query.page) queryParams = `page=${query.page}&`
+	if (query.page_size) queryParams = `${queryParams}page_size=${query.page_size}&`
+	if (query.ordering) queryParams = `${queryParams}ordering=${query.ordering}&`
+
+	return queryParams;
+}

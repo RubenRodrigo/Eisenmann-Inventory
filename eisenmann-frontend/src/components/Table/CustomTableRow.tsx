@@ -1,16 +1,12 @@
-import { Product, ProductData } from '@/interfaces/Products';
-import { Checkbox, TableRow } from '@mui/material'
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import React from 'react'
+import { TableRow } from '@mui/material'
+import { tableCellClasses } from '@mui/material/TableCell';
 
 interface Props {
+	children?: JSX.Element
 	isItemSelected: boolean;
-	row: Product;
-	handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
-	labelId: string;
 }
 
-const CustomTableRow = ({ isItemSelected, row, handleClick, labelId }: Props) => {
+export const CustomTableRow = ({ children, isItemSelected }: Props) => {
 	return (
 		<TableRow
 			hover
@@ -25,33 +21,7 @@ const CustomTableRow = ({ isItemSelected, row, handleClick, labelId }: Props) =>
 				}
 			}}
 		>
-			<TableCell
-				padding="checkbox"
-			>
-				<Checkbox
-					onClick={(event) => handleClick(event, row.id)}
-					color="primary"
-					checked={isItemSelected}
-					inputProps={{
-						'aria-labelledby': labelId,
-					}}
-				/>
-			</TableCell>
-			<TableCell
-				component="th"
-				id={labelId}
-				scope="row"
-				padding="none"
-				sx={{
-					fontWeight: 'bold'
-				}}
-			>
-				{row.name}
-			</TableCell>
-			<TableCell align="right">{row.created_at}</TableCell>
-			<TableCell align="right">{row.total_price}</TableCell>
+			{children}
 		</TableRow>
 	)
 }
-
-export default CustomTableRow
