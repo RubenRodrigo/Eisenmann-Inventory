@@ -51,4 +51,12 @@ export const headCellsProduct: readonly HeadCell<Product>[] = [
 		label: 'Fecha de Creación',
 		isAllowed: true,
 	},
+	{
+		id: 'actions',
+		numeric: false,
+		disablePadding: false,
+		label: 'Acciones',
+		isAllowed: false,
+		isAction: true
+	},
 ];

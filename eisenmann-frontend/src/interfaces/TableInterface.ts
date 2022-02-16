@@ -5,6 +5,7 @@ export type Order = 'asc' | 'desc';
 export interface HeadCell<T> {
 	disablePadding: boolean;
 	id: keyof T & string | 'actions';
+	isAction?: boolean;
 	isAllowed: boolean;
 	label: string;
 	numeric: boolean;

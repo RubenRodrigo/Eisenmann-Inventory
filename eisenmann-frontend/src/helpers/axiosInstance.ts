@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_ENDPOINT = process.env.API_URL
 
-export const axiosInstanceServerSide = (accessToken: any, timeout = 5000) => {
+export const axiosInstanceServerSide = (accessToken?: any, timeout = 5000) => {
 
   const axiosInstance = axios.create({
     baseURL: API_ENDPOINT,

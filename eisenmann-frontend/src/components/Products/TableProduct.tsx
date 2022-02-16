@@ -68,7 +68,7 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 									{
 										isLoading
 											?
-											<CustomTableRowLoading colSpan={6} size={80} />
+											<CustomTableRowLoading colSpan={8} size={80} />
 											:
 											data.results.map((row) => {
 												const isItemSelected = isSelected(row.id);

@@ -1,7 +1,8 @@
 
 import { Product } from '@/interfaces/Products'
-import { Checkbox, TableCell } from '@mui/material'
+import { Button, Checkbox, TableCell } from '@mui/material'
 import React from 'react'
+import { NextLinkComposed } from '../Link'
 
 interface Props {
 	isItemSelected: boolean;
@@ -43,6 +44,20 @@ export const TableProductRow = ({ isItemSelected, row, handleClick, labelId }: P
 			<TableCell align="right">{row.total_price}</TableCell>
 			<TableCell align="right">{row.total_stock}</TableCell>
 			<TableCell align="right">{row.created_at}</TableCell>
+			<TableCell align="center">
+				<Button
+					component={NextLinkComposed}
+					to={`/productos/${row.id}`}
+				>
+					Ir
+				</Button>
+				<Button
+					component={NextLinkComposed}
+					to={`/productos/${row.id}/edit`}
+				>
+					Editar
+				</Button>
+			</TableCell>
 		</>
 	)
 }

@@ -1,14 +1,17 @@
-import type { NextPage } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Box, Container, Paper, Typography, Alert } from '@mui/material';
 import Image from 'next/image';
 import Logo from '@/public/images/logo.png'
 import WelcomeSVG from '@/public/images/welcome.svg'
-import { useTheme, alpha } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { LoginForm } from '@/components/Login/LoginForm';
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../api/auth/[...nextauth]"
+import { Session } from 'next-auth';
 
 const SideSpace = 440
 
-const Index: NextPage = () => {
+const Index = ({ session }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
 	const theme = useTheme();
 
@@ -116,6 +119,30 @@ const Index: NextPage = () => {
 			</Box>
 		</Box >
 	);
+}
+
+type PageProps = {
+	session: Session | null,
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
+
+	const session = await getServerSession(context, authOptions)
+
+	if (session && !session.error) {
+		return {
+			redirect: {
+				permanent: false,
+				destination: "/"
+			}
+		}
+	}
+
+	return {
+		props: {
+			session,
+		},
+	}
 }
 
 export default Index

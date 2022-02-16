@@ -1,45 +1,49 @@
 // Libraries
 import axios from "axios";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { axiosInstanceServerSide } from "../../../helpers/axiosInstance";
 import jwt from 'jsonwebtoken';
-import { getAccessToken } from "src/services/login";
+import { getAccessToken, getRefreshToken } from "src/services/tokens";
+import { TokenAPI, TokenDec } from "@/interfaces/Token";
+import { JWT } from "next-auth/jwt";
 
 
-// async function refreshAccessToken(token: any) {
-//     try {
+async function refreshAccessToken(token: JWT): Promise<JWT> {
+    try {
+        const response = await getRefreshToken(
+            {
+                refreshToken: token.refreshToken
+            }
+        );
 
-//         const now = Math.ceil(Date.now() / 1000);
-//         const response = await axiosInstanceServerSide().post('/token/',
-//             {
-//                 refresh_token: token.refreshToken
-//             }
-//         );
+        const refreshedToken: TokenAPI = response.data
+        if (response.status !== 200) { throw refreshedToken }
 
-//         const refreshedTokens = response.data
-//         if (response.status !== 200) { throw refreshedTokens }
 
-//         return {
-//             ...token,
-//             accessToken: refreshedTokens.access_token,
-//             token_expire: refreshedTokens.expires_in + now,
-//             token_type: refreshedTokens.token_type,
-//             scope: refreshedTokens.scope,
-//             refreshToken: refreshedTokens.refresh_token
-//         }
-//     } catch (error) {
-//         if (axios.isAxiosError(error)) {
-//             const { response } = error
-//             console.log("REFRESH TOKEN FAILED", response?.data)
-//         }
-//         return {
-//             ...token, error: "RefreshAccessTokenError",
-//         }
-//     }
-// }
+        const dec: any = jwt.decode(refreshedToken.access, { complete: true });
+        const payload: TokenDec = dec.payload as TokenDec
 
-export default NextAuth({
+        return {
+            ...token,
+            accessToken: refreshedToken.access,
+            refreshToken: refreshedToken.refresh,
+            accessTokenExpires: payload.exp,
+            userId: payload.user_id,
+            tokenType: payload.token_type
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const { response } = error
+            console.log("REFRESH TOKEN FAILED", response?.data)
+        }
+        return {
+            ...token, error: "RefreshAccessTokenError",
+        }
+    }
+}
+
+
+export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
     providers: [
         CredentialsProvider({
@@ -63,8 +67,8 @@ export default NextAuth({
                     )
 
                     const user = response.data
-                    console.log(user);
-                    console.log('CREDENTIALS ACCESS TOKEN ----> ' + JSON.stringify(user.access, null, 2));
+                    // console.log(user);
+                    // console.log('CREDENTIALS ACCESS TOKEN ----> ' + JSON.stringify(user.access, null, 2));
 
                     if (user) {
                         return {
@@ -97,22 +101,28 @@ export default NextAuth({
         */
         async jwt({ token, account, user }) {
             // Persist the OAuth access_token to the token right after signin
-            // console.log('token', token);
-            // console.log('account', account);
-            // console.log('user', user);
 
             if (user && account) {
-                const UserCredentials: any = user.data
+                const UserCredentials = user.data
                 const dec: any = jwt.decode(UserCredentials.access, { complete: true });
+                const payload: TokenDec = dec.payload as TokenDec
+                console.log(payload.exp);
                 token.accessToken = UserCredentials.access
                 token.refreshToken = UserCredentials.refresh
-                token.accessTokenExpires = dec.payload.exp
-                token.userId = dec.payload.user_id
-
+                token.accessTokenExpires = payload.exp
+                token.userId = payload.user_id
+                token.tokenType = payload.token_type
+                return token
+            }
+            const now = Math.ceil(Date.now() / 1000);
+            // Return token with error if token has expired 
+            if (now < token.accessTokenExpires) {
+                console.log('VALID TOKEN');
                 return token
             }
 
-            return token
+            console.log('REFRESHED TOKEN');
+            return refreshAccessToken(token)
         },
         /*
         |--------------------------------------------------------------------------
@@ -122,12 +132,11 @@ export default NextAuth({
         async session({ session, token }) {
 
             // Store Access Token to Session
-            session.refreshToken = token.refreshToken as string
-            session.accessToken = token.accessToken as string
-            session.accessTokenExpires = token.accessTokenExpires as string
+            session.refreshToken = token.refreshToken
+            session.accessToken = token.accessToken
+            session.accessTokenExpires = token.accessTokenExpires
 
             session.user = {
-                ...session.user,
                 'id': token.userId as number
             }
 
@@ -136,11 +145,16 @@ export default NextAuth({
             if (token.error) {
                 session.error = token.error as string
             }
+            console.log(session);
+
             return session
         },
     },
     pages: {
-        signIn: '/login'
+        signIn: '/auth/signin',
+        error: '/auth/signin'
     },
     secret: process.env.SECRET,
-})
+}
+
+export default NextAuth(authOptions)

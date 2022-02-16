@@ -15,10 +15,9 @@ export const CustomTableRow = ({ children, isItemSelected }: Props) => {
 			tabIndex={-1}
 			selected={isItemSelected}
 			sx={{
-
 				[`& .${tableCellClasses.body}`]: {
 					fontSize: 15
-				}
+				},
 			}}
 		>
 			{children}

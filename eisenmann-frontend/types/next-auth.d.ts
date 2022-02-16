@@ -1,4 +1,6 @@
+import { JWT } from "next-auth/jwt"
 import NextAuth from "next-auth"
+import { TokenAPI, TokenDec } from "@/interfaces/Token"
 
 declare module "next-auth" {
 	/**
@@ -7,11 +9,35 @@ declare module "next-auth" {
 	interface Session {
 		refreshToken: string;
 		accessToken: string;
-		accessTokenExpires: string;
+		accessTokenExpires: number;
 		error?: string;
 		user: {
 			/** The user's postal address. */
 			id: number
 		}
+	}
+	interface User {
+
+		id: string;
+		name?: string | null;
+		email?: string | null;
+		image?: string | null;
+		data: TokenAPI
+	}
+}
+
+declare module "next-auth/jwt" {
+	/** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+	interface JWT {
+		/** OpenID ID Token */
+		name?: string | null;
+		email?: string | null;
+		picture?: string | null;
+		sub?: string;
+		refreshToken: string;
+		accessToken: string;
+		accessTokenExpires: number;
+		error?: string;
+		tokenType?: string
 	}
 }

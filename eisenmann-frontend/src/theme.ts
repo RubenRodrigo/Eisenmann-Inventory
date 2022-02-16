@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
-import { red, grey, yellow, blueGrey, orange } from '@mui/material/colors';
+import { grey, yellow } from '@mui/material/colors';
 import { PaletteMode } from '@mui/material';
+import { Shadows } from '@mui/material/styles/shadows';
 
 // Create a theme instance.
 
@@ -18,9 +19,6 @@ const CustomTheme = (mode: PaletteMode) => {
 						main: grey[400],
 						dark: grey[900],
 						contrastText: 'rgba(0, 0, 0, 0.5)'
-					},
-					background: {
-						default: grey[50],
 					},
 					divider: grey[800],
 				}
@@ -43,16 +41,10 @@ const CustomTheme = (mode: PaletteMode) => {
 		},
 		shape: {
 			borderRadius: 10
-		}
-		// components: {
-		// 	MuiPaper: {
-		// 		styleOverrides: {
-		// 			root: {
-		// 				background: grey[900],
-		// 			}
-		// 		}
-		// 	}
-		// }
+		},
+		shadows: [...createTheme({}).shadows.map((shadow, i) => (
+			i === 1 ? 'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px' : shadow
+		))] as Shadows,
 	});
 	return theme
 }

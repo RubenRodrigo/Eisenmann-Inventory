@@ -7,7 +7,7 @@ import { ReactElement, useEffect, useState } from "react";
 // NextJS
 import { useRouter } from "next/router";
 // NextAuth
-import { useSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 
 // Mui
 import { Box, Button, Paper } from "@mui/material";
@@ -37,40 +37,34 @@ const initialState = {
 const Index = () => {
 	const [isLoading, setIsLoading] = useState(true)
 	const [products, setProducts] = useState<ProductResponse>(initialState)
-	const { data: session, status } = useSession()
 
 	const router = useRouter()
 	const query = router.query
 
 	// TODO: Create a Custom Hook which handles the state
-	const getData = async (accessToken: string, queryParams: string) => {
+	const getData = async (queryParams: string) => {
 		setIsLoading(true)
 		try {
-			const res = await getProductList({ token: accessToken, queryParams: `?${queryParams}` })
-			const data: ProductResponse = res.data
-			setProducts(data)
+			const session = await getSession()
+			if (session && session.error) {
+				signOut()
+			}
+			if (session?.accessToken) {
+				const res = await getProductList({ token: session.accessToken, queryParams: `?${queryParams}` })
+				const data: ProductResponse = res.data
+				setProducts(data)
+			}
+
 		} catch (error) {
 			console.log(error);
 		} finally {
 			setIsLoading(false)
 		}
 	}
-
 	useEffect(() => {
-		if (status === 'authenticated') {
-			if (session) {
-				if (session.error) {
-					console.log('Error');
-				} else {
-					const queryParams = getQueryParams(query)
-					getData(session.accessToken, queryParams)
-				}
-			}
-			if (session === null) {
-				router.push('/');
-			}
-		}
-	}, [status, session, query])
+		const queryParams = getQueryParams(query)
+		getData(queryParams)
+	}, [query])
 
 	return (
 		<Box>
@@ -88,8 +82,10 @@ const Index = () => {
 			</Header>
 			<Box>
 				<Paper
-					elevation={0}
-					sx={{ p: 2 }}
+					elevation={1}
+					sx={{
+						p: 2,
+					}}
 				>
 					<TableProduct
 						isLoading={isLoading}
@@ -101,6 +97,7 @@ const Index = () => {
 	)
 };
 
+Index.auth = true
 Index.getLayout = function getLayout(page: ReactElement) {
 	return (
 		<Layout>
