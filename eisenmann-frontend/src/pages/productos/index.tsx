@@ -19,7 +19,7 @@ import { Layout } from "@/components/Layout";
 import { TableProduct } from "@/components/Products/TableProduct";
 
 // Interfaces
-import { ProductResponse } from "@/interfaces/Products";
+import { ProductResponse } from "@/interfaces/Product";
 
 // Services
 import { getProductList } from "src/services/products";

@@ -10,7 +10,7 @@ interface Props {
 	rowsPerPageOptions: number[]
 }
 
-export const CustomTablePagination = (props: Props) => {
+export const OrderedTablePagination = (props: Props) => {
 
 	const { isLoading, rowsPerPage, page, count, rowsPerPageOptions } = props
 

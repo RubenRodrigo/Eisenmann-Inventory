@@ -45,6 +45,26 @@ const CustomTheme = (mode: PaletteMode) => {
 		shadows: [...createTheme({}).shadows.map((shadow, i) => (
 			i === 1 ? 'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px' : shadow
 		))] as Shadows,
+		components: {
+			MuiCardHeader: {
+				styleOverrides: {
+					// Name of the slot
+					root: {
+						// Some CSS
+						padding: '16px 24px',
+					},
+				},
+			},
+			MuiListItem: {
+				styleOverrides: {
+					// Name of the slot
+					root: {
+						// Some CSS
+						padding: '8px 24px',
+					},
+				},
+			}
+		}
 	});
 	return theme
 }

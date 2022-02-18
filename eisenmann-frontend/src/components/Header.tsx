@@ -19,7 +19,7 @@ export const Header = ({ title, children }: Props) => {
 			}}
 		>
 			<Box>
-				<Typography color="text.primary" variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>{title}</Typography>
+				<Typography color="text.primary" variant="h5" sx={{ fontWeight: 'bold', mb: 2, textTransform: 'capitalize' }}>{title}</Typography>
 				<NextBreadcrumbs />
 				{/* <Breadcrumbs aria-label="breadcrumb">
 					{links.map((item, index) => (

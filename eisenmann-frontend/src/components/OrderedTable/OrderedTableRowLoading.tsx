@@ -5,7 +5,7 @@ interface Props {
 	colSpan: number;
 	size: number;
 }
-export const CustomTableRowLoading = ({ colSpan, size }: Props) => {
+export const OrderedTableRowLoading = ({ colSpan, size }: Props) => {
 	return (
 		<TableRow>
 			<TableCell colSpan={colSpan}>

@@ -17,7 +17,7 @@ interface Data<T> extends Pagination {
 	results: T[]
 }
 
-export const CustomTableContainer = <T extends { id: number },>({ orderDefault, children, data }: Props<T>) => {
+export const OrderedTableContainer = <T extends { id: number },>({ orderDefault, children, data }: Props<T>) => {
 
 	const { order, orderBy, handleRequestSort } = useOrderTable<T>(orderDefault)
 	const { selected, handleSelectAllClick, handleSelectOneClick, isSelected } = useSelectRowTable<T>(data.results)

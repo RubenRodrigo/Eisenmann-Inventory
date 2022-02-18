@@ -10,17 +10,18 @@ import { visuallyHidden } from '@mui/utils';
 // Interfaces
 import { HeadCell, Order } from '@/interfaces/TableInterface';
 
+// type ItemsMap<T> = { [key: string]: T }
 interface Props<T> {
 	headCells: readonly HeadCell<T>[]
 	numSelected: number;
 	order: Order;
-	orderBy: string;
+	orderBy: keyof T;
 	rowCount: number;
 	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof T) => void;
 	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const CustomTableHead = <T,>(props: Props<T>) => {
+export const OrderedTableHead = <T extends object>(props: Props<T>) => {
 
 	const router = useRouter();
 	const isMounted = useRef(false)

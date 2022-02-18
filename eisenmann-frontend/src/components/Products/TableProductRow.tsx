@@ -1,5 +1,4 @@
-
-import { Product } from '@/interfaces/Products'
+import { Product } from '@/interfaces/Product'
 import { Button, Checkbox, TableCell } from '@mui/material'
 import React from 'react'
 import { NextLinkComposed } from '../Link'
@@ -41,8 +40,6 @@ export const TableProductRow = ({ isItemSelected, row, handleClick, labelId }: P
 			<TableCell>{row.type_detail.name}</TableCell>
 			<TableCell>{row.unit_detail.name}</TableCell>
 			<TableCell align="right">{row.code}</TableCell>
-			<TableCell align="right">{row.total_price}</TableCell>
-			<TableCell align="right">{row.total_stock}</TableCell>
 			<TableCell align="right">{row.created_at}</TableCell>
 			<TableCell align="center">
 				<Button

@@ -1,4 +1,4 @@
-import { Product } from "@/interfaces/Products";
+import { Product } from "@/interfaces/Product";
 import { HeadCell } from "@/interfaces/TableInterface";
 
 export const headCellsProduct: readonly HeadCell<Product>[] = [
@@ -29,20 +29,6 @@ export const headCellsProduct: readonly HeadCell<Product>[] = [
 		disablePadding: false,
 		label: 'Codigo',
 		isAllowed: true,
-	},
-	{
-		id: 'total_price',
-		numeric: true,
-		disablePadding: false,
-		label: 'Precio Total',
-		isAllowed: false,
-	},
-	{
-		id: 'total_stock',
-		numeric: true,
-		disablePadding: false,
-		label: 'Stock Total',
-		isAllowed: false,
 	},
 	{
 		id: 'created_at',

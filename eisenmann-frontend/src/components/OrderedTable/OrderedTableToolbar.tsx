@@ -8,7 +8,7 @@ interface CustomTableToolbarProps {
 	numSelected: number;
 }
 
-export const CustomTableToolbar = (props: CustomTableToolbarProps) => {
+export const OrderedTableToolbar = (props: CustomTableToolbarProps) => {
 	const { name, numSelected } = props;
 
 	return (

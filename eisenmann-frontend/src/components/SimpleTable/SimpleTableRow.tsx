@@ -6,7 +6,7 @@ interface Props {
 	isItemSelected: boolean;
 }
 
-export const CustomTableRow = ({ children, isItemSelected }: Props) => {
+export const SimpleTableRow = ({ children, isItemSelected }: Props) => {
 	return (
 		<TableRow
 			hover
@@ -14,11 +14,6 @@ export const CustomTableRow = ({ children, isItemSelected }: Props) => {
 			aria-checked={isItemSelected}
 			tabIndex={-1}
 			selected={isItemSelected}
-			sx={{
-				[`& .${tableCellClasses.body}`]: {
-					fontSize: 15
-				},
-			}}
 		>
 			{children}
 		</TableRow>

@@ -1,20 +1,22 @@
 // Data
-import { headCellsProduct } from 'src/data/headCells/headCells';
+import { headCellsProduct } from 'src/data/headCells/headCellsProduct';
 
 // MUI
 import { Table, TableBody, TableRow } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 // Components
-import { CustomTableContainer } from '../Table/CustomTableContainer';
-import { CustomTableHead } from '../Table/CustomTableHead';
-import { CustomTablePagination } from '../Table/CustomTablePagination';
-import { CustomTableRow } from '../Table/CustomTableRow';
-import { CustomTableRowLoading } from '../Table/CustomTableRowLoading';
-import { CustomTableToolbar } from '../Table/CustomTableToolbar';
+import {
+	OrderedTableContainer,
+	OrderedTableHead,
+	OrderedTablePagination,
+	OrderedTableRow,
+	OrderedTableRowLoading,
+	OrderedTableToolbar,
+} from '../OrderedTable'
 
 // Interfaces
-import { ProductResponse } from '@/interfaces/Products';
+import { Product, ProductResponse } from '@/interfaces/Product';
 import { TableProductRow } from './TableProductRow';
 
 interface Props {
@@ -24,7 +26,7 @@ interface Props {
 
 export const TableProduct = ({ data, isLoading }: Props) => {
 	return (
-		<CustomTableContainer
+		<OrderedTableContainer
 			orderDefault='created_at'
 			data={data}
 		>
@@ -41,7 +43,7 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 				}) => {
 					return (
 						<>
-							<CustomTableToolbar
+							<OrderedTableToolbar
 								name='Productos'
 								numSelected={selected.length}
 							/>
@@ -55,7 +57,7 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 								aria-labelledby="tableTitle"
 								size='medium'
 							>
-								<CustomTableHead
+								<OrderedTableHead<Product>
 									numSelected={selected.length}
 									order={order}
 									orderBy={orderBy}
@@ -68,13 +70,13 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 									{
 										isLoading
 											?
-											<CustomTableRowLoading colSpan={8} size={80} />
+											<OrderedTableRowLoading colSpan={8} size={80} />
 											:
 											data.results.map((row) => {
 												const isItemSelected = isSelected(row.id);
 												const labelId = `enhanced-table-checkbox-${row.id}`;
 												return (
-													<CustomTableRow
+													<OrderedTableRow
 														key={row.id}
 														isItemSelected={isItemSelected}
 													>
@@ -84,7 +86,7 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 															handleClick={handleSelectOneClick}
 															labelId={labelId}
 														/>
-													</CustomTableRow>
+													</OrderedTableRow>
 												);
 											})
 									}
@@ -99,7 +101,7 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 									)}
 								</TableBody>
 							</Table>
-							<CustomTablePagination
+							<OrderedTablePagination
 								rowsPerPageOptions={[5, 10, 15]}
 								count={data.count}
 								rowsPerPage={data.countItemsOnPage}
@@ -110,6 +112,6 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 					)
 				}
 			}
-		</CustomTableContainer>
+		</OrderedTableContainer>
 	)
 }
