@@ -32,7 +32,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     filterset_class = ProductFilter
     ordering_fields = ['created_at', 'type', 'unit', 'code']
-    ordering = ['created_at']
+    ordering = ['-created_at']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':

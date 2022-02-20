@@ -2,6 +2,8 @@
 from datetime import datetime
 # Django
 from django.shortcuts import get_object_or_404
+from django.db.models import Avg, Max, Min, Count, Sum, F
+from django.db import connection
 # DRF
 from rest_framework import serializers
 # Models
@@ -76,19 +78,46 @@ class ProductStockBaseSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(ProductBaseSerializer):
     """ For retrive lists of Products """
-    class Meta(ProductBaseSerializer.Meta):
-        fields = ProductBaseSerializer.Meta.fields + [
-            'total_stock',
-            'total_price',
-        ]
+    pass
 
 
 class ProductDetailedSerializer(ProductBaseSerializer):
-    product_stock = ProductStockBaseSerializer(many=True, read_only=True)
+    product_stock = serializers.SerializerMethodField()
+    summary = serializers.SerializerMethodField()
+
+    def get_product_stock(self, instance):
+        product_stock = instance.product_stock.all().order_by(
+            '-created_at')[:10]
+        return ProductStockBaseSerializer(product_stock, many=True).data
+
+    def get_summary(self, instance):
+        summary = ProductStock.objects.filter(
+            product=instance).aggregate(
+            total_stock=Sum('product_entry__stock'),
+            total_price=Sum(
+                F('product_entry__stock') * F('product_entry__unit_price')
+            ),
+        )
+        return summary
+    #     ordered_queryset = instance.data.filter(date_time__gt=time_threshold)
+    #     quality = ordered_queryset.aggregate(value=Avg('quality'))
+    #     humidity = ordered_queryset.aggregate(value=Avg('humidity'))
+    #     temperature = ordered_queryset.aggregate(value=Avg('temperature'))
+    #     warm = ordered_queryset.aggregate(value=Avg('warm'))
+    #     concentration = ordered_queryset.aggregate(value=Avg('concentration'))
+    #     averages = {
+    #         "quality__avg": quality['value'],
+    #         "humidity__avg": humidity['value'],
+    #         "temperature__avg": temperature['value'],
+    #         "warm__avg": warm['value'],
+    #         "concentration__avg": concentration['value'],
+    #     }
+    #     return averages
 
     class Meta(ProductBaseSerializer.Meta):
         fields = ProductBaseSerializer.Meta.fields + [
             'product_stock',
+            'summary',
         ]
 
 

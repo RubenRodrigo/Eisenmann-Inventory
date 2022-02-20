@@ -24,18 +24,6 @@ class Product(BaseModel):
     def __str__(self):
         return self.name
 
-    @property
-    def total_stock(self):
-        product_stock = self.product_stock.all()
-        total = sum([item.total_stock_entries for item in product_stock])
-        return total
-
-    @property
-    def total_price(self):
-        product_stock = self.product_stock.all()
-        total = sum([item.total_stock_price for item in product_stock])
-        return total
-
 
 class ProductStock(models.Model):
     product = models.ForeignKey(
