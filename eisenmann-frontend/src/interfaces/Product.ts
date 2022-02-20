@@ -3,18 +3,22 @@ import { ProductStock } from "./ProductStock";
 import { ProductType } from "./ProductType";
 import { ProductUnit } from "./ProductUnit";
 
-export interface Product {
-	id: number;
+
+export interface ProductBase {
 	type: number;
 	unit: number;
 	code: string;
 	name: string;
+	state: boolean;
 	description: string;
+}
+
+export interface Product extends ProductBase {
+	id: number;
 	created_at: Date;
 	updated_at: Date;
-	type_detail: ProductType;
-	unit_detail: ProductUnit;
-	state: boolean;
+	type_detail?: ProductType;
+	unit_detail?: ProductUnit;
 	summary?: ProductSummary
 }
 

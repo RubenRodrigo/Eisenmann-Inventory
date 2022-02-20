@@ -95,7 +95,7 @@ export const CardInfo = ({ data }: Props) => {
 								variant='body1'
 								color={theme.palette.grey[600]}
 							>
-								{data?.type_detail.name}
+								{data?.type_detail?.name}
 							</Typography>
 						</ListItemText>
 					</ListItem>
@@ -106,7 +106,7 @@ export const CardInfo = ({ data }: Props) => {
 								variant='body1'
 								color={theme.palette.grey[600]}
 							>
-								{data?.unit_detail.name}
+								{data?.unit_detail?.name}
 							</Typography>
 						</ListItemText>
 					</ListItem>

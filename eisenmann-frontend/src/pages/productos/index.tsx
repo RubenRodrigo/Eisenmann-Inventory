@@ -23,6 +23,7 @@ import { ProductResponse } from "@/interfaces/Product";
 
 // Services
 import { getProductList } from "src/services/products";
+import { NextLinkComposed } from "@/components/Link";
 
 const initialState = {
 	count: 0,
@@ -68,11 +69,12 @@ const Index = () => {
 
 	return (
 		<Box>
-
 			<Header title="Productos">
 				<Button
+					component={NextLinkComposed}
 					variant="contained"
 					startIcon={<AddIcon />}
+					to='/productos/crear'
 					sx={{
 						fontWeight: 'bold',
 						textTransform: 'none',

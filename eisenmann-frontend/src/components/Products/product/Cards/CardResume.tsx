@@ -2,7 +2,6 @@ import { Box, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { ProductDetail } from '@/interfaces/Product';
-import { StateButton } from '@/components/StateButton';
 
 interface Props {
 	data?: ProductDetail

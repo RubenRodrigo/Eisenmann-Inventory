@@ -105,7 +105,6 @@ export const LoginForm = () => {
 				>
 					¿Olvidaste la contraseña?
 				</Link>
-
 			</form>
 		</>
 	);

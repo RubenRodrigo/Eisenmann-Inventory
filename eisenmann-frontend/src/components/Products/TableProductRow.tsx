@@ -37,8 +37,8 @@ export const TableProductRow = ({ isItemSelected, row, handleClick, labelId }: P
 			>
 				{row.name}
 			</TableCell>
-			<TableCell>{row.type_detail.name}</TableCell>
-			<TableCell>{row.unit_detail.name}</TableCell>
+			<TableCell>{row.type_detail?.name}</TableCell>
+			<TableCell>{row.unit_detail?.name}</TableCell>
 			<TableCell align="right">{row.code}</TableCell>
 			<TableCell align="right">{row.created_at}</TableCell>
 			<TableCell align="center">

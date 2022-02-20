@@ -2,6 +2,9 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import { Button, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { signOut } from 'next-auth/react';
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -58,9 +61,15 @@ export const AppBarComponent = ({ drawerWidth, handleDrawerOpen, open }: Props) 
 			}}
 				disableGutters
 			>
-				<Typography variant="h6" noWrap component="div">
+				<Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
 					Mini variant drawer
 				</Typography>
+				<Button
+					color="inherit"
+					onClick={() => signOut()}
+				>
+					Logout
+				</Button>
 			</Toolbar>
 		</AppBar>
 	)
