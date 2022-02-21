@@ -28,7 +28,7 @@ export const headCellsProduct: readonly HeadCell<Product>[] = [
 		numeric: true,
 		disablePadding: false,
 		label: 'Codigo',
-		isAllowed: true,
+		isAllowed: false,
 	},
 	{
 		id: 'created_at',

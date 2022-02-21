@@ -16,21 +16,27 @@ import { Layout } from '@/components/Layout';
 import { TableProductStock } from '@/components/Products/product/TableProductStock';
 import { DialogCustom } from '@/components/Dialog/DialogCustom';
 import { FormEditProduct } from '@/components/Products/edit/FormEditProduct';
+import { ActionProduct } from '@/components/Products/product/ActionProduct';
 
 const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
 	const [product, setProduct] = useState<ProductDetail>(data)
 	const [openToast, setOpenToast] = useState(false);
 	const [openDialog, setOpenDialog] = useState(false);
+
 	const handleOpenDialog = () => setOpenDialog(true);
 	const handleCloseDialog = () => setOpenDialog(false);
 
 	const handleOpenToast = () => setOpenToast(true);
 	const handleCloseToast = () => setOpenToast(false);
 
+
+
 	return (
 		<Box>
-			<Header title={`${product.name ? product.name : 'Productos'}`} />
+			<Header title={`${product.name ? product.name : 'Productos'}`}>
+				<ActionProduct productId={product.id} />
+			</Header>
 			<DialogCustom
 				title='Editar Producto'
 				open={openDialog}
