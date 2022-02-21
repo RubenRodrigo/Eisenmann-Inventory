@@ -1,6 +1,6 @@
 import { Header } from '@/components/Header';
 import { Layout } from '@/components/Layout';
-import { FromCreateProduct } from '@/components/Products/create/FromCreateProduct';
+import { FormCreateProduct } from '@/components/Products/create/FormCreateProduct';
 import { Box, Paper } from '@mui/material';
 import { ReactElement } from 'react'
 
@@ -15,7 +15,7 @@ const Index = () => {
 						p: 2,
 					}}
 				>
-					<FromCreateProduct />
+					<FormCreateProduct />
 				</Paper>
 			</Box>
 		</Box>

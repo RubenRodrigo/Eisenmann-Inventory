@@ -35,3 +35,14 @@ export const createProduct = async ({ token, product }: CreateProductProps) => {
 		...product
 	})
 }
+
+interface EditProductProps extends CreateProductProps {
+	id: number;
+	product: ProductBase
+}
+
+export const editProduct = async ({ token, id, product }: EditProductProps) => {
+	return await axiosInstanceServerSide(token).put(`/product/product/${id}/`, {
+		...product
+	})
+}

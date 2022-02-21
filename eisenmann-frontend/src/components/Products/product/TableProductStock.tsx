@@ -10,7 +10,7 @@ import { SimpleTableContainer } from '@/components/SimpleTable/SimpleTableContai
 import { headCellsProductProduct } from 'src/data/headCells/headCellsProductStock';
 
 interface Props {
-	data?: ProductStock[];
+	data: ProductStock[];
 }
 
 export const TableProductStock = ({ data }: Props) => {

@@ -1,18 +1,19 @@
+import { getSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
+
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup'
 
+import { Box, Button, Grid } from '@mui/material';
+
+import { ProductBase } from '@/interfaces/Product';
 import { MyCheckbox } from '@/components/Inputs/MyCheckbox';
 import { MyInput } from '@/components/Inputs/MyInput';
-import { Button, Grid } from '@mui/material';
-import { ProductTypeSelect } from './ProductTypeSelect';
-import { Box } from '@mui/system';
-import { ProductUnitSelect } from './ProductUnitSelect';
+import { ProductTypeSelect } from '../common/ProductTypeSelect';
+import { ProductUnitSelect } from '../common/ProductUnitSelect';
 import { createProduct } from 'src/services/products';
-import { getSession, signOut } from 'next-auth/react';
-import { ProductBase } from '@/interfaces/Product';
-import { useRouter } from 'next/router';
 
-export const FromCreateProduct = () => {
+export const FormCreateProduct = () => {
 
 	const router = useRouter()
 

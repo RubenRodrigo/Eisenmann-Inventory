@@ -32,7 +32,7 @@ export const SimpleTableContainer = <T extends { id: number },>({ emptyRows, hea
 									}} />
 								</TableRow>
 								:
-								<>a</>
+								<></>
 						}
 					</TableBody>
 				</Table>

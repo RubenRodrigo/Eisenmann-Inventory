@@ -35,10 +35,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return ProductDetailedSerializer
-        else:
+        if self.action == 'list':
             return ProductSerializer
+        else:
+            return ProductDetailedSerializer
 
 
 class ProductStockViewSet(viewsets.ModelViewSet):

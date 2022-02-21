@@ -1,10 +1,9 @@
 import { ParsedUrlQuery } from 'querystring';
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerSession, Session } from 'next-auth';
 
-import { Box, Button, Card, CardContent, CardHeader, Divider, Grid, Paper } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Alert, Box, Button, Card, CardHeader, Divider, Grid, Snackbar } from '@mui/material';
 
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { ProductDetail } from '@/interfaces/Product';
@@ -15,12 +14,38 @@ import { CardResume } from '@/components/Products/product/Cards/CardResume';
 import { Header } from '@/components/Header';
 import { Layout } from '@/components/Layout';
 import { TableProductStock } from '@/components/Products/product/TableProductStock';
+import { DialogCustom } from '@/components/Dialog/DialogCustom';
+import { FormEditProduct } from '@/components/Products/edit/FormEditProduct';
 
 const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
+	const [product, setProduct] = useState<ProductDetail>(data)
+	const [openToast, setOpenToast] = useState(false);
+	const [openDialog, setOpenDialog] = useState(false);
+	const handleOpenDialog = () => setOpenDialog(true);
+	const handleCloseDialog = () => setOpenDialog(false);
+
+	const handleOpenToast = () => setOpenToast(true);
+	const handleCloseToast = () => setOpenToast(false);
+
 	return (
 		<Box>
-			<Header title={`${data?.name ? data.name : 'Productos'}`} />
+			<Header title={`${product.name ? product.name : 'Productos'}`} />
+			<DialogCustom
+				title='Editar Producto'
+				open={openDialog}
+				handleClose={handleCloseDialog}
+				handleOpen={handleOpenDialog}
+			>
+				{
+					data &&
+					<FormEditProduct
+						handleOpenToast={handleOpenToast}
+						setProduct={setProduct}
+						product={product}
+					/>
+				}
+			</DialogCustom>
 			<Box>
 				<Box sx={{ mb: 5 }}>
 					<Grid container spacing={2}>
@@ -29,18 +54,18 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 								<CardHeader
 									title="Información Básica"
 									action={
-										<Button>Editar</Button>
+										<Button onClick={handleOpenDialog}>Editar</Button>
 									}
 								/>
 								<Divider light />
-								<CardInfo data={data} />
+								<CardInfo data={product} />
 							</Card>
 						</Grid>
 						<Grid item xs={5}>
 							<Card>
 								<CardHeader title="Resumen" />
 								<Divider light />
-								<CardResume data={data} />
+								<CardResume data={product} />
 							</Card>
 						</Grid>
 					</Grid>
@@ -52,10 +77,19 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 							subheader="Todos los ProductosStock de este producto. Solo se muestran los 10 últimos creados."
 						/>
 						<Divider light />
-						<TableProductStock data={data?.product_stock} />
+						<TableProductStock data={product.product_stock} />
 					</Card>
 				</Box>
 			</Box>
+			<Snackbar
+				open={openToast}
+				autoHideDuration={6000}
+				onClose={handleCloseToast}
+			>
+				<Alert onClose={handleCloseToast} severity="success" sx={{ width: '100%' }}>
+					Producto actualizado
+				</Alert>
+			</Snackbar>
 		</Box >
 	)
 }
@@ -71,7 +105,7 @@ Index.getLayout = function getLayout(page: ReactElement) {
 
 interface PageProps {
 	session: Session | null,
-	data?: ProductDetail
+	data: ProductDetail
 }
 
 interface Params extends ParsedUrlQuery {
@@ -89,6 +123,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 	if (token && params && params.id) {
 		try {
 			const res = await getProduct({ token, id })
+			if (res.status !== 200) {
+				return {
+					notFound: true,
+				}
+			}
 			const data: ProductDetail = res.data
 			return {
 				props: {
@@ -97,14 +136,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 				},
 			}
 		} catch (error) {
-
+			return {
+				notFound: true,
+			}
 		}
 	}
 
 	return {
-		props: {
-			session,
-		},
+		notFound: true,
 	}
 }
 

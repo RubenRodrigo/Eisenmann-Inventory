@@ -99,20 +99,7 @@ class ProductDetailedSerializer(ProductBaseSerializer):
             ),
         )
         return summary
-    #     ordered_queryset = instance.data.filter(date_time__gt=time_threshold)
-    #     quality = ordered_queryset.aggregate(value=Avg('quality'))
-    #     humidity = ordered_queryset.aggregate(value=Avg('humidity'))
-    #     temperature = ordered_queryset.aggregate(value=Avg('temperature'))
-    #     warm = ordered_queryset.aggregate(value=Avg('warm'))
-    #     concentration = ordered_queryset.aggregate(value=Avg('concentration'))
-    #     averages = {
-    #         "quality__avg": quality['value'],
-    #         "humidity__avg": humidity['value'],
-    #         "temperature__avg": temperature['value'],
-    #         "warm__avg": warm['value'],
-    #         "concentration__avg": concentration['value'],
-    #     }
-    #     return averages
+
 
     class Meta(ProductBaseSerializer.Meta):
         fields = ProductBaseSerializer.Meta.fields + [

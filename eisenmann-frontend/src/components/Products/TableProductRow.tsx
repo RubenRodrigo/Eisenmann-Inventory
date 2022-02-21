@@ -1,6 +1,7 @@
+import { Checkbox, IconButton, TableCell } from '@mui/material'
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+
 import { Product } from '@/interfaces/Product'
-import { Button, Checkbox, TableCell } from '@mui/material'
-import React from 'react'
 import { NextLinkComposed } from '../Link'
 
 interface Props {
@@ -42,18 +43,13 @@ export const TableProductRow = ({ isItemSelected, row, handleClick, labelId }: P
 			<TableCell align="right">{row.code}</TableCell>
 			<TableCell align="right">{row.created_at}</TableCell>
 			<TableCell align="center">
-				<Button
+				<IconButton
 					component={NextLinkComposed}
+					size="small"
 					to={`/productos/${row.id}`}
 				>
-					Ir
-				</Button>
-				<Button
-					component={NextLinkComposed}
-					to={`/productos/${row.id}/edit`}
-				>
-					Editar
-				</Button>
+					<ArrowForwardOutlinedIcon />
+				</IconButton>
 			</TableCell>
 		</>
 	)
