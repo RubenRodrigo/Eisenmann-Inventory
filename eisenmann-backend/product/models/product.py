@@ -22,7 +22,7 @@ class Product(BaseModel):
     state = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class ProductStock(models.Model):
@@ -37,7 +37,7 @@ class ProductStock(models.Model):
     minium_stock = models.IntegerField(default=15, null=True, blank=True)
 
     def __str__(self):
-        return str(self.product) + self.created_at.strftime('%m/%d/%Y, %H:%M:%S')
+        return str(self.product) + "-" + self.created_at.strftime('%m/%d/%Y, %H:%M:%S')
 
     @property
     def total_stock(self):
@@ -77,7 +77,7 @@ class ProductStock(models.Model):
 
     def clean(self):
         if not self.id:
-            today = datetime.now()
+            today = self.created_at
             queryset = ProductStock.objects.filter(product=self.product).filter(
                 created_at__year=today.year, created_at__month=today.month)
             if queryset.exists():

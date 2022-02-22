@@ -100,7 +100,6 @@ class ProductDetailedSerializer(ProductBaseSerializer):
         )
         return summary
 
-
     class Meta(ProductBaseSerializer.Meta):
         fields = ProductBaseSerializer.Meta.fields + [
             'product_stock',
