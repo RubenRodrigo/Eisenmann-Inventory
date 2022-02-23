@@ -1,6 +1,3 @@
-// NodeJS
-import { ParsedUrlQuery } from "querystring";
-
 // React
 import { ReactElement, useEffect, useState } from "react";
 
@@ -16,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 // Custom Components
 import { Header } from "@/components/Header";
 import { Layout } from "@/components/Layout";
-import { TableProduct } from "@/components/Products/TableProduct";
+import { TableProduct } from "@/components/pages/Products/TableProduct";
 
 // Interfaces
 import { ProductResponse } from "@/interfaces/Product";
@@ -24,6 +21,7 @@ import { ProductResponse } from "@/interfaces/Product";
 // Services
 import { getProductList } from "src/services/products";
 import { NextLinkComposed } from "@/components/Link";
+import { getQueryParams } from "@/helpers/utils";
 
 const initialState = {
 	count: 0,
@@ -62,6 +60,7 @@ const Index = () => {
 			setIsLoading(false)
 		}
 	}
+
 	useEffect(() => {
 		const queryParams = getQueryParams(query)
 		getData(queryParams)
@@ -110,12 +109,3 @@ Index.getLayout = function getLayout(page: ReactElement) {
 
 export default Index;
 
-const getQueryParams = (query: ParsedUrlQuery) => {
-	let queryParams = '';
-
-	if (query.page) queryParams = `page=${query.page}&`
-	if (query.page_size) queryParams = `${queryParams}page_size=${query.page_size}&`
-	if (query.ordering) queryParams = `${queryParams}ordering=${query.ordering}&`
-
-	return queryParams;
-}

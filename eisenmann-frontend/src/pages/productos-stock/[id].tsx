@@ -5,22 +5,22 @@ import { getServerSession, Session } from 'next-auth';
 
 import { Alert, Box, Button, Card, CardHeader, Divider, Grid, Snackbar } from '@mui/material';
 
-import { authOptions } from '../../api/auth/[...nextauth]';
-import { ProductDetail } from '@/interfaces/Product';
-import { getProduct } from 'src/services/products';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { ProductStockDetail } from '@/interfaces/ProductStock';
+import { getProductStock } from 'src/services/product-stock';
 
-import { CardInfo } from '@/components/Products/product/Cards/CardInfo';
-import { CardResume } from '@/components/Products/product/Cards/CardResume';
 import { Header } from '@/components/Header';
 import { Layout } from '@/components/Layout';
-import { TableProductStock } from '@/components/Products/product/TableProductStock';
+import { ActionProductStock } from '@/components/pages/ProductsStock/item/ActionProductStock';
+import { CardInfo } from '@/components/pages/ProductsStock/item/Cards/CardInfo';
+import { CardResume } from '@/components/pages/ProductsStock/item/Cards/CardResume';
+import { TableProductEntries } from '@/components/pages/ProductsStock/item/TableProductEntries';
 import { DialogCustom } from '@/components/Dialog/DialogCustom';
-import { FormEditProduct } from '@/components/Products/edit/FormEditProduct';
-import { ActionProduct } from '@/components/Products/product/ActionProduct';
+import { FormEditProductStock } from '@/components/pages/ProductsStock/edit/FormEditProductStock';
 
 const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
-	const [product, setProduct] = useState<ProductDetail>(data)
+	const [productStock, setProductStock] = useState<ProductStockDetail>(data)
 	const [openToast, setOpenToast] = useState(false);
 	const [openDialog, setOpenDialog] = useState(false);
 
@@ -34,8 +34,8 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 
 	return (
 		<Box>
-			<Header title={`${product.name ? product.name : 'Productos'}`}>
-				<ActionProduct productId={product.id} />
+			<Header title={`${productStock.product_detail.name ? productStock.product_detail.name : 'Producto Stock'}`}>
+				<ActionProductStock productStockId={productStock.id} />
 			</Header>
 			<DialogCustom
 				title='Editar Producto'
@@ -45,10 +45,10 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 			>
 				{
 					data &&
-					<FormEditProduct
+					<FormEditProductStock
 						handleOpenToast={handleOpenToast}
-						setProduct={setProduct}
-						product={product}
+						setProductStock={setProductStock}
+						productStock={productStock}
 					/>
 				}
 			</DialogCustom>
@@ -64,28 +64,32 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 									}
 								/>
 								<Divider light />
-								<CardInfo data={product} />
+								<CardInfo data={productStock} />
 							</Card>
 						</Grid>
 						<Grid item xs={5}>
+							{/* Resume info like total stock, total price, etc.  */}
 							<Card>
 								<CardHeader title="Resumen" />
 								<Divider light />
-								<CardResume data={product} />
+								<CardResume data={productStock} />
 							</Card>
+							{/* Resume info like total stock, total price, etc.  */}
 						</Grid>
 					</Grid>
 				</Box>
+				{/* Product Entries */}
 				<Box>
 					<Card>
 						<CardHeader
-							title="Productos Stock"
-							subheader="Todos los ProductosStock de este producto. Solo se muestran los 10 últimos creados."
+							title="Entradas de Productos"
+							subheader="Todas las entradas de un producto por més."
 						/>
 						<Divider light />
-						<TableProductStock data={product.product_stock} />
+						<TableProductEntries data={productStock.product_entry} />
 					</Card>
 				</Box>
+				{/* Product Entries */}
 			</Box>
 			<Snackbar
 				open={openToast}
@@ -93,7 +97,7 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 				onClose={handleCloseToast}
 			>
 				<Alert onClose={handleCloseToast} severity="success" sx={{ width: '100%' }}>
-					Producto actualizado
+					Producto Stock actualizado
 				</Alert>
 			</Snackbar>
 		</Box >
@@ -111,7 +115,7 @@ Index.getLayout = function getLayout(page: ReactElement) {
 
 interface PageProps {
 	session: Session | null,
-	data: ProductDetail
+	data: ProductStockDetail
 }
 
 interface Params extends ParsedUrlQuery {
@@ -128,13 +132,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 
 	if (token && params && params.id) {
 		try {
-			const res = await getProduct({ token, id })
+			const res = await getProductStock({ token, id })
 			if (res.status !== 200) {
 				return {
 					notFound: true,
 				}
 			}
-			const data: ProductDetail = res.data
+			const data: ProductStockDetail = res.data
 			return {
 				props: {
 					session,
@@ -147,7 +151,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 			}
 		}
 	}
-
 	return {
 		notFound: true,
 	}

@@ -108,7 +108,15 @@ class ProductDetailedSerializer(ProductBaseSerializer):
 
 
 class ProductStockSerializer(ProductStockBaseSerializer):
-    pass
+    """ For List ProductStock with Product data"""
+    product_detail = ProductSerializer(source='product', read_only=True)
+
+    class Meta(ProductStockBaseSerializer.Meta):
+        model = ProductStock
+        fields = ProductStockBaseSerializer.Meta.fields + [
+            # Nested Fields
+            'product_detail',
+        ]
 
 
 class ProductStockDetailedSerializer(ProductStockBaseSerializer):
@@ -137,7 +145,8 @@ class ProductStockDetailedSerializer(ProductStockBaseSerializer):
         return value
 
     def create(self, validated_data):
-        return ProductStock.objects.create(**validated_data)
+        created_at = datetime.now()
+        return ProductStock.objects.create(created_at=created_at, **validated_data)
 
 
 class ProductStockRealSerializer(serializers.Serializer):

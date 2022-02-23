@@ -1,13 +1,13 @@
+import { Box, Paper } from '@mui/material';
 import { Header } from '@/components/Header';
 import { Layout } from '@/components/Layout';
-import { FormCreateProduct } from '@/components/pages/Products/create/FormCreateProduct';
-import { Box, Paper } from '@mui/material';
 import { ReactElement } from 'react'
+import { FormCreateProductStock } from '@/components/pages/ProductsStock/create/FormCreateProductStock';
 
 const Index = () => {
 	return (
 		<Box>
-			<Header title="Crear Producto" />
+			<Header title="Crear Producto Stock" />
 			<Box>
 				<Paper
 					elevation={1}
@@ -15,7 +15,7 @@ const Index = () => {
 						p: 2,
 					}}
 				>
-					<FormCreateProduct />
+					<FormCreateProductStock />
 				</Paper>
 			</Box>
 		</Box>

@@ -3,7 +3,6 @@ import { ProductStock } from "./ProductStock";
 import { ProductType } from "./ProductType";
 import { ProductUnit } from "./ProductUnit";
 
-
 export interface ProductBase {
 	type: number;
 	unit: number;

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getSession, signOut } from 'next-auth/react';
 import { getTypeList } from 'src/services/types';
 import { ProductType } from '@/interfaces/ProductType';
-import { MySelect } from '../../Inputs/MySelect';
+import { MySelect } from '../../../Inputs/MySelect';
 
 interface Props {
 	label: string;

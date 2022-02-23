@@ -13,7 +13,7 @@ import {
 	OrderedTableRow,
 	OrderedTableRowLoading,
 	OrderedTableToolbar,
-} from '../OrderedTable'
+} from '../../OrderedTable'
 
 // Interfaces
 import { Product, ProductResponse } from '@/interfaces/Product';

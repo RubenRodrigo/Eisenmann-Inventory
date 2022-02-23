@@ -2,7 +2,7 @@ import { Checkbox, IconButton, TableCell } from '@mui/material'
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 
 import { Product } from '@/interfaces/Product'
-import { NextLinkComposed } from '../Link'
+import { NextLinkComposed } from '../../Link'
 
 interface Props {
 	isItemSelected: boolean;

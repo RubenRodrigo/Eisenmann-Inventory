@@ -6,8 +6,8 @@ import { Box, TableRow } from '@mui/material';
 // Interfaces
 import { TableProductStockRow } from './TableProductStockRow';
 import { ProductStock } from '@/interfaces/ProductStock';
-import { SimpleTableContainer } from '@/components/SimpleTable/SimpleTableContainer';
-import { headCellsProductProduct } from 'src/data/headCells/headCellsProductStock';
+import { SimpleTableContainer } from '@/components/SimpleTable/';
+import { headCellsProductStock } from 'src/data/headCells/headCellsProduct';
 
 interface Props {
 	data: ProductStock[];
@@ -21,7 +21,7 @@ export const TableProductStock = ({ data }: Props) => {
 	return (
 		<Box sx={{ p: '2px 0px' }}>
 			<SimpleTableContainer
-				headCells={headCellsProductProduct}
+				headCells={headCellsProductStock}
 				emptyRows={emptyRows}
 			>
 				{data && data.map((row) => (

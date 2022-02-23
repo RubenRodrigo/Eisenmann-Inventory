@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Logo from '@/public/images/logo.png'
 import WelcomeSVG from '@/public/images/welcome.svg'
 import { useTheme } from '@mui/material/styles';
-import { LoginForm } from '@/components/Login/LoginForm';
+import { LoginForm } from '@/components/pages/Login/LoginForm';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../api/auth/[...nextauth]"
 import { Session } from 'next-auth';

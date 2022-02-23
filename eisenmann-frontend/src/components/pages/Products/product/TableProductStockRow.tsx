@@ -3,7 +3,7 @@ import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 
 import { StateButton } from '@/components/StateButton'
 import { ProductStock } from '@/interfaces/ProductStock'
-import { NextLinkComposed } from '../../Link'
+import { NextLinkComposed } from '../../../Link'
 interface Props {
 	row: ProductStock;
 }

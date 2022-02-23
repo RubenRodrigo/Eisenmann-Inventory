@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getSession, signOut } from 'next-auth/react';
-import { getUnitList } from 'src/services/units';
-import { MySelect } from '../../Inputs/MySelect';
-import { ProductUnit } from '@/interfaces/ProductUnit';
+import { MySelect } from '../../../Inputs/MySelect';
+import { Product } from '@/interfaces/Product';
+import { getProductListAll } from 'src/services/products';
 
 interface Props {
 	label: string;
@@ -19,8 +19,8 @@ const getData = async () => {
 			signOut()
 		}
 		if (session?.accessToken) {
-			const res = await getUnitList({ token: session.accessToken })
-			const data: ProductUnit[] = res.data
+			const res = await getProductListAll({ token: session.accessToken })
+			const data: Product[] = res.data
 			return data
 		}
 
@@ -29,10 +29,10 @@ const getData = async () => {
 	}
 }
 
-export const ProductUnitSelect = ({ label, ...props }: Props) => {
+export const ProductSelect = ({ label, ...props }: Props) => {
 
 	const [open, setOpen] = useState(false);
-	const [options, setOptions] = useState<readonly ProductUnit[]>([]);
+	const [options, setOptions] = useState<readonly Product[]>([]);
 	const loading = open && options.length === 0;
 
 	useEffect(() => {
@@ -42,7 +42,6 @@ export const ProductUnitSelect = ({ label, ...props }: Props) => {
 
 		(async () => {
 			const data = await getData();
-
 			if (data) {
 				setOptions([...data]);
 			}

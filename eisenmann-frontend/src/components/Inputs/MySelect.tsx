@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from '@mui/material'
+import { Autocomplete, TextField, Chip } from '@mui/material'
 import { useField } from 'formik'
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -31,7 +31,9 @@ export const MySelect = <T extends { id: number }>(props: Props<T>) => {
 			onOpen={() => {
 				setOpen(true);
 			}}
-			getOptionLabel={(option) => option.name}
+			getOptionLabel={(option) => {
+				return option.name ?? 'Sin Nombre'
+			}}
 			isOptionEqualToValue={(option, value) => {
 				// If id is equal to 0 means that no value was provided
 				if (value.id === 0) return true
@@ -42,10 +44,17 @@ export const MySelect = <T extends { id: number }>(props: Props<T>) => {
 				helpers.setValue(newValue ? newValue : {
 					id: 0,
 					name: '',
-					description: '',
 				})
 			}}
 			{...field}
+			renderOption={(props, option, index) => {
+				const key = `listItem-${index}-${option.id}`;
+				return (
+					<li {...props} key={key}>
+						{option['name']}
+					</li>
+				);
+			}}
 			renderInput={(params) => {
 				return (
 					<TextField

@@ -1,20 +1,43 @@
+import { ProductEntry } from "@/interfaces/ProductEntry";
 import { ProductStock } from "@/interfaces/ProductStock";
 import { HeadCell } from "@/interfaces/TableInterface";
 
-export const headCellsProductProduct: readonly HeadCell<ProductStock>[] = [
+export const headCellsProductStock: readonly HeadCell<ProductStock>[] = [
+	{
+		id: 'product',
+		numeric: false,
+		disablePadding: true,
+		label: 'Producto',
+		isAllowed: false,
+	},
 	{
 		id: 'created_at',
 		numeric: false,
 		disablePadding: false,
-		label: 'Fecha de cración',
+		label: 'Fecha de creación',
+		isAllowed: true,
+	},
+	{
+		id: 'state',
+		numeric: false,
+		disablePadding: false,
+		label: 'Estado',
+		isAllowed: false,
+		isAction: false
+	},
+	{
+		id: 'total_stock',
+		numeric: true,
+		disablePadding: false,
+		label: 'Stock Total',
 		isAllowed: false,
 	},
 	{
-		id: 'init_stock',
+		id: 'current_price',
 		numeric: true,
 		disablePadding: false,
-		label: 'Stock Inicial',
-		isAllowed: true,
+		label: 'Precio Actual',
+		isAllowed: false,
 	},
 	{
 		id: 'real_stock',
@@ -24,58 +47,71 @@ export const headCellsProductProduct: readonly HeadCell<ProductStock>[] = [
 		isAllowed: true,
 	},
 	{
-		id: 'state',
-		numeric: false,
-		disablePadding: false,
-		label: 'Estado',
-		isAllowed: true,
-		isAction: true
-	},
-	{
-		id: 'medium_stock',
-		numeric: true,
-		disablePadding: false,
-		label: 'Stock Medio permitido ',
-		isAllowed: false,
-	},
-	{
-		id: 'minium_stock',
-		numeric: true,
-		disablePadding: false,
-		label: 'Stock Minimo permitido',
-		isAllowed: false,
-	},
-	{
-		id: 'total_stock',
-		numeric: true,
-		disablePadding: false,
-		label: 'Stock Total',
-		isAllowed: true,
-	},
-	{
-		id: 'total_price',
-		numeric: true,
-		disablePadding: false,
-		label: 'Precio Total',
-		isAllowed: false,
-	},
-	{
 		id: 'difference_stock',
 		numeric: true,
 		disablePadding: false,
 		label: 'Diferencia de Stock',
 		isAllowed: false,
-	}, {
-		id: 'current_price',
-		numeric: true,
-		disablePadding: false,
-		label: 'Precio Actual',
-		isAllowed: false,
-	}, {
+	},
+	{
 		id: 'actions',
 		numeric: true,
 		disablePadding: false,
 		label: 'Acciones',
 		isAllowed: false,
+	},
+];
+
+
+export const headCellsProductEntries: readonly HeadCell<ProductEntry>[] = [
+	{
+		id: 'description',
+		numeric: false,
+		disablePadding: false,
+		label: 'Descripcion',
+		isAllowed: false,
+	},
+	{
+		id: 'init_stock',
+		numeric: true,
+		disablePadding: true,
+		label: 'Stock Inicial',
+		isAllowed: false,
+	},
+	{
+		id: 'stock',
+		numeric: true,
+		disablePadding: false,
+		label: 'Stock',
+		isAllowed: true,
+	},
+	{
+		id: 'unit_price',
+		numeric: true,
+		disablePadding: false,
+		label: 'Precio Unitario',
+		isAllowed: false,
+	},
+	{
+		id: 'total_cost',
+		numeric: true,
+		disablePadding: false,
+		label: 'Costo Total',
+		isAllowed: false,
+	},
+	{
+		id: 'created_at',
+		numeric: true,
+		disablePadding: false,
+		label: 'Fecha de creación',
+		isAllowed: true,
+	},
+	{
+		id: 'actions',
+		numeric: false,
+		disablePadding: false,
+		label: 'Acciones',
+		isAllowed: false,
+		isAction: true
 	},
 ];

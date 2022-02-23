@@ -15,6 +15,11 @@ export const routes: NavRouteType[] = [
 				IconComponent: ProductionQuantityLimitsIcon
 			},
 			{
+				path: '/productos-stock',
+				name: 'Producto Stock',
+				IconComponent: ProductionQuantityLimitsIcon
+			},
+			{
 				path: '/utilidades-producto',
 				name: 'Utilidades',
 				IconComponent: LibraryBooksIcon

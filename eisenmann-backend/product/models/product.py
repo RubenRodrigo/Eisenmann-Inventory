@@ -31,13 +31,13 @@ class ProductStock(models.Model):
     init_stock = models.IntegerField(default=0, null=True, blank=True)
     real_stock = models.IntegerField(default=0, null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     state = models.BooleanField(default=False)
     medium_stock = models.IntegerField(default=30, null=True, blank=True)
     minium_stock = models.IntegerField(default=15, null=True, blank=True)
 
     def __str__(self):
-        return str(self.product) + "-" + self.created_at.strftime('%m/%d/%Y, %H:%M:%S')
+        return str(self.product) + "-" + (self.created_at.strftime('%m/%d/%Y, %H:%M:%S')) if (self.created_at) is not None else ''
 
     @property
     def total_stock(self):
@@ -85,11 +85,4 @@ class ProductStock(models.Model):
                     'There is another product stock in the current month.')
 
     def save(self, *args, **kwargs):
-        product_entry = self.product_entry.all()
-        total = sum([item.stock for item in product_entry])
-        self.stock_total = total
-
-        if self.created_at is None:
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
         return super(ProductStock, self).save(*args, **kwargs)

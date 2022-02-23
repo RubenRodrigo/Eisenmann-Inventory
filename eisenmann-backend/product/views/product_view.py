@@ -30,8 +30,19 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'type', 'unit', 'code']
     ordering = ['-created_at']
 
+    @action(detail=False, methods=['get'])
+    def list_all(self, request):
+        """
+        List all Products
+        ---
+        """
+        queryset = self.get_queryset()
+        serializer = self.get_serializer_class()
+        serializer = serializer(queryset, many=True)
+        return Response(serializer.data)
+
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action in ['list', 'list_all']:
             return ProductSerializer
         else:
             return ProductDetailedSerializer
