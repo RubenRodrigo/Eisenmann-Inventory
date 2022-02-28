@@ -18,3 +18,7 @@ class ProductEntrySerializer(serializers.ModelSerializer):
             'updated_at',
             'total_cost'
         ]
+        read_only_fields = ['init_stock']
+
+    def create(self, validated_data):
+        return ProductEntry.objects.create(init_stock=validated_data.get('stock', 0), **validated_data)

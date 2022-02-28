@@ -23,4 +23,7 @@ class ProductEntry(BaseModel):
     # is how much money has been spent on this entry
     @property
     def total_cost(self):
-        return self.unit_price * self.init_stock
+        return int(self.unit_price * self.init_stock)
+
+    class Meta:
+        ordering = ['-created_at']

@@ -8,9 +8,9 @@ import { Box, Button, Grid } from '@mui/material';
 
 import { MyInput } from '@/components/Inputs/MyInput';
 import { DialogContext } from '@/context/DialogContext';
-import { editProductStock } from 'src/services/product-stock';
 import { ProductEntryBase } from '@/interfaces/ProductEntry';
 import { createProductEntry } from 'src/services/product-entry';
+import { useProductStock } from '@/reducer/ProductStockReducer/hooks/useProductStock';
 
 interface Props {
 	productStockId: number
@@ -18,6 +18,7 @@ interface Props {
 export const FormCreateProductEntry = ({ productStockId }: Props) => {
 
 	const { handleClose } = useContext(DialogContext)
+	const { addProductEntry, updateSummaryValues } = useProductStock()
 
 	const createData = async (value: ProductEntryBase) => {
 		try {
@@ -27,9 +28,10 @@ export const FormCreateProductEntry = ({ productStockId }: Props) => {
 			}
 			if (session?.accessToken) {
 				const res = await createProductEntry({ token: session.accessToken, productEntry: value })
-				if (res.status === 200) {
+				if (res.status === 201) {
 					const data = res.data
-					console.log(data);
+					addProductEntry(data)
+					updateSummaryValues()
 				}
 			}
 

@@ -1,3 +1,12 @@
-from django.test import TestCase
+import pytest
 
-# Create your tests here.
+from client.models import DocumentType
+
+
+@pytest.mark.django_db
+def test_document():
+    document = DocumentType.objects.create(
+        name="RUC",
+        description='Description'
+    )
+    assert document.name == 'RUC'

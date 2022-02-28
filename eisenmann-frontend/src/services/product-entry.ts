@@ -24,3 +24,11 @@ export const createProductEntry = async ({ token, productEntry }: CreateProductE
 		...productEntry
 	})
 }
+
+interface DeleteProductEntryProps extends Props {
+	id: number;
+}
+
+export const deleteProductEntry = async ({ token, id }: DeleteProductEntryProps) => {
+	return await axiosInstanceServerSide(token).delete(`/product/product_entry/${id}/`)
+}

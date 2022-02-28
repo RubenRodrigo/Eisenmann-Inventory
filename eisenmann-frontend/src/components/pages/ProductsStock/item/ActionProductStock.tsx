@@ -16,10 +16,14 @@ interface Props {
 }
 
 export const ActionProductStock = ({ productStockId }: Props) => {
-	const [openDialog, setOpenDialog] = useState(false)
+	const [openDialogAddEntry, setOpenDialogAddEntry] = useState(false)
 	const router = useRouter()
 
-	const handleDelete = async (onClose: () => void) => {
+	/**
+	 * Deletes a ProductStock by ID and returns to /productos-stock url.
+	 * @param onClose function which will be executed at the end. 
+	 */
+	const handleDeleteProductStock = async (onClose: () => void) => {
 		try {
 			const session = await getSession()
 			if (session) {
@@ -34,14 +38,14 @@ export const ActionProductStock = ({ productStockId }: Props) => {
 		}
 	}
 
-	const handleOpenDialog = () => setOpenDialog(true);
-	const handleCloseDialog = () => setOpenDialog(false);
+	const handleOpenDialog = () => setOpenDialogAddEntry(true);
+	const handleCloseDialog = () => setOpenDialogAddEntry(false);
 
 	return (
 		<div>
 			<DialogCustom
 				title='Añadir Entrada'
-				open={openDialog}
+				open={openDialogAddEntry}
 				handleClose={handleCloseDialog}
 				handleOpen={handleOpenDialog}
 			>
@@ -55,11 +59,17 @@ export const ActionProductStock = ({ productStockId }: Props) => {
 				{
 					({ onClose }) => (
 						<div>
-							<MenuItem onClick={handleOpenDialog} disableRipple>
+							<MenuItem
+								onClick={() => {
+									handleOpenDialog()
+									onClose()
+								}}
+								disableRipple
+							>
 								<AddIcon />
 								Añadir Entrada
 							</MenuItem>
-							<MenuItem onClick={() => handleDelete(onClose)} disableRipple>
+							<MenuItem onClick={() => handleDeleteProductStock(onClose)} disableRipple>
 								<DeleteIcon />
 								Eliminar Producto Stock
 							</MenuItem>

@@ -6,20 +6,21 @@ import * as Yup from 'yup'
 
 import { Box, Button, Grid } from '@mui/material';
 
-import { ProductStockBaseEdit, ProductStockDetail } from '@/interfaces/ProductStock';
+import { ProductStockBaseEdit } from '@/interfaces/ProductStock';
 import { MyCheckbox } from '@/components/Inputs/MyCheckbox';
 import { MyInput } from '@/components/Inputs/MyInput';
 import { DialogContext } from '@/context/DialogContext';
 import { editProductStock } from 'src/services/product-stock';
+import { useProductStock } from '@/reducer/ProductStockReducer/hooks/useProductStock';
 
 interface Props {
-	productStock: ProductStockDetail
-	setProductStock: (value: ProductStockDetail) => void
 	handleOpenToast: () => void
 }
-export const FormEditProductStock = ({ setProductStock, productStock, handleOpenToast }: Props) => {
+export const FormEditProductStock = ({ handleOpenToast }: Props) => {
 
 	const { handleClose } = useContext(DialogContext)
+	const { productStock, loadProductStock } = useProductStock()
+
 
 	const editData = async (value: ProductStockBaseEdit) => {
 		try {
@@ -31,7 +32,7 @@ export const FormEditProductStock = ({ setProductStock, productStock, handleOpen
 				const res = await editProductStock({ token: session.accessToken, id: productStock.id, productStock: value })
 				if (res.status === 200) {
 					const data = res.data
-					setProductStock(data)
+					loadProductStock(data)
 				}
 			}
 
@@ -46,9 +47,9 @@ export const FormEditProductStock = ({ setProductStock, productStock, handleOpen
 	return (
 		<Formik
 			initialValues={{
-				medium_stock: 0,
-				minium_stock: 0,
-				state: false,
+				medium_stock: productStock.medium_stock,
+				minium_stock: productStock.minium_stock,
+				state: productStock.state,
 			}}
 			onSubmit={(values) => {
 				editData({
