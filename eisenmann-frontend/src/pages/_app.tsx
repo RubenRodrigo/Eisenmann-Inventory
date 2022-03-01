@@ -9,7 +9,7 @@ import { CssBaseline, PaletteMode } from '@mui/material';
 
 import createEmotionCache from '../createEmotionCache';
 import CustomTheme from '../theme';
-import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useMemo, useState } from 'react';
 import { ColorModeContext } from '@/context/ColorModeContext';
 import { NextPage } from 'next';
 

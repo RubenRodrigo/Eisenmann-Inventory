@@ -36,7 +36,7 @@ export const TableProductStockRow = ({ row }: Props) => {
 				<IconButton
 					component={NextLinkComposed}
 					size="small"
-					to={`/product_stock/${row.id}`}
+					to={`/productos-stock/${row.id}`}
 				>
 					<ArrowForwardOutlinedIcon />
 				</IconButton>

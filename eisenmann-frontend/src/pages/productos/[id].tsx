@@ -21,16 +21,10 @@ import { ActionProduct } from '@/components/pages/Products/product/ActionProduct
 const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
 	const [product, setProduct] = useState<ProductDetail>(data)
-	const [openToast, setOpenToast] = useState(false);
 	const [openDialog, setOpenDialog] = useState(false);
 
 	const handleOpenDialog = () => setOpenDialog(true);
 	const handleCloseDialog = () => setOpenDialog(false);
-
-	const handleOpenToast = () => setOpenToast(true);
-	const handleCloseToast = () => setOpenToast(false);
-
-
 
 	return (
 		<Box>
@@ -46,7 +40,6 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 				{
 					data &&
 					<FormEditProduct
-						handleOpenToast={handleOpenToast}
 						setProduct={setProduct}
 						product={product}
 					/>
@@ -87,15 +80,6 @@ const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSi
 					</Card>
 				</Box>
 			</Box>
-			<Snackbar
-				open={openToast}
-				autoHideDuration={6000}
-				onClose={handleCloseToast}
-			>
-				<Alert onClose={handleCloseToast} severity="success" sx={{ width: '100%' }}>
-					Producto actualizado
-				</Alert>
-			</Snackbar>
 		</Box >
 	)
 }

@@ -18,6 +18,7 @@ import {
 import { TableProductStockRow } from './TableProductStockRow';
 import { ProductStock, ProductStockResponse } from '@/interfaces/ProductStock';
 import { headCellsProductStock } from 'src/data/headCells/headCellsProductStock';
+import { CalendarPicker } from './CalendarPicker';
 
 interface Props {
 	data: ProductStockResponse;
@@ -35,18 +36,15 @@ export const TableProductStock = ({ data, isLoading }: Props) => {
 					emptyRows,
 					order,
 					orderBy,
-					selected,
-					handleSelectAllClick,
-					handleSelectOneClick,
 					handleRequestSort,
-					isSelected,
 				}) => {
 					return (
 						<>
 							<OrderedTableToolbar
 								name='Productos'
-								numSelected={selected.length}
-							/>
+							>
+								<CalendarPicker />
+							</OrderedTableToolbar>
 							<Table
 								sx={{
 									minWidth: 750,
@@ -58,12 +56,9 @@ export const TableProductStock = ({ data, isLoading }: Props) => {
 								size='medium'
 							>
 								<OrderedTableHead<ProductStock>
-									numSelected={selected.length}
 									order={order}
 									orderBy={orderBy}
-									onSelectAllClick={handleSelectAllClick}
 									onRequestSort={handleRequestSort}
-									rowCount={data.results.length}
 									headCells={headCellsProductStock}
 								/>
 								<TableBody>
@@ -73,17 +68,13 @@ export const TableProductStock = ({ data, isLoading }: Props) => {
 											<OrderedTableRowLoading colSpan={8} size={80} />
 											:
 											data.results.map((row) => {
-												const isItemSelected = isSelected(row.id);
 												const labelId = `enhanced-table-checkbox-${row.id}`;
 												return (
 													<OrderedTableRow
 														key={row.id}
-														isItemSelected={isItemSelected}
 													>
 														<TableProductStockRow
-															isItemSelected={isItemSelected}
 															row={row}
-															handleClick={handleSelectOneClick}
 															labelId={labelId}
 														/>
 													</OrderedTableRow>

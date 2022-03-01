@@ -20,7 +20,7 @@ interface Data<T> extends Pagination {
 export const OrderedTableContainer = <T extends { id: number },>({ orderDefault, children, data }: Props<T>) => {
 
 	const { order, orderBy, handleRequestSort } = useOrderTable<T>(orderDefault)
-	const { selected, handleSelectAllClick, handleSelectOneClick, isSelected } = useSelectRowTable<T>(data.results)
+	// const { selected, handleSelectAllClick, handleSelectOneClick, isSelected } = useSelectRowTable<T>(data.results)
 
 	// // Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
@@ -35,11 +35,7 @@ export const OrderedTableContainer = <T extends { id: number },>({ orderDefault,
 							emptyRows,
 							order,
 							orderBy,
-							selected,
-							handleSelectAllClick,
-							handleSelectOneClick,
 							handleRequestSort,
-							isSelected,
 						}
 					)
 				}

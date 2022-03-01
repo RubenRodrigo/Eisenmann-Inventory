@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
@@ -11,9 +13,11 @@ import { MyInput } from '@/components/Inputs/MyInput';
 import { ProductSelect } from '../common/ProductSelect';
 import { ProductStockBase } from '@/interfaces/ProductStock';
 import { createProductStock } from 'src/services/product-stock';
+import { useLayout } from '@/hooks/useLayout';
 
 export const FormCreateProductStock = () => {
 
+	const { handleOpenToast, handleToastInfo } = useLayout()
 	const router = useRouter()
 
 	const createData = async (productStock: ProductStockBase) => {
@@ -28,11 +32,22 @@ export const FormCreateProductStock = () => {
 				console.log(data);
 				if (res.status === 201) {
 					router.push('/productos-stock')
+					handleToastInfo({
+						code: res.status,
+						message: 'El ProductStock se creo correctamente.'
+					})
 				}
 			}
 
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				handleToastInfo({
+					code: err.response ? err.response.status : 500,
+					message: 'Hubo un error'
+				})
+			}
+		} finally {
+			handleOpenToast()
 		}
 	}
 

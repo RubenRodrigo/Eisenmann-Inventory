@@ -12,9 +12,12 @@ import { MyInput } from '@/components/Inputs/MyInput';
 import { ProductTypeSelect } from '../common/ProductTypeSelect';
 import { ProductUnitSelect } from '../common/ProductUnitSelect';
 import { createProduct } from 'src/services/products';
+import { useLayout } from '@/hooks/useLayout';
+import axios from 'axios';
 
 export const FormCreateProduct = () => {
 
+	const { handleOpenToast, handleToastInfo } = useLayout()
 	const router = useRouter()
 
 	const createData = async (product: ProductBase) => {
@@ -29,12 +32,22 @@ export const FormCreateProduct = () => {
 				const data = res.data
 				console.log(data);
 				if (res.status === 201) {
+					handleToastInfo({
+						code: res.status,
+						message: 'Se creo el Producto correctamente.'
+					})
 					router.push('/productos')
 				}
 			}
-
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				handleToastInfo({
+					code: err.response ? err.response.status : 500,
+					message: 'Hubo un error'
+				})
+			}
+		} finally {
+			handleOpenToast();
 		}
 	}
 

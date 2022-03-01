@@ -6,7 +6,7 @@ export const headCellsProductStock: readonly HeadCell<ProductStock>[] = [
 	{
 		id: 'product',
 		numeric: false,
-		disablePadding: true,
+		disablePadding: false,
 		label: 'Producto',
 		isAllowed: false,
 	},

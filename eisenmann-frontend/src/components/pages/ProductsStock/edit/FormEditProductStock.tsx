@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { useContext } from 'react';
 import { getSession, signOut } from 'next-auth/react';
 
@@ -12,12 +14,11 @@ import { MyInput } from '@/components/Inputs/MyInput';
 import { DialogContext } from '@/context/DialogContext';
 import { editProductStock } from 'src/services/product-stock';
 import { useProductStock } from '@/reducer/ProductStockReducer/hooks/useProductStock';
+import { useLayout } from '@/hooks/useLayout';
 
-interface Props {
-	handleOpenToast: () => void
-}
-export const FormEditProductStock = ({ handleOpenToast }: Props) => {
+export const FormEditProductStock = () => {
 
+	const { handleOpenToast, handleToastInfo } = useLayout()
 	const { handleClose } = useContext(DialogContext)
 	const { productStock, loadProductStock } = useProductStock()
 
@@ -33,11 +34,20 @@ export const FormEditProductStock = ({ handleOpenToast }: Props) => {
 				if (res.status === 200) {
 					const data = res.data
 					loadProductStock(data)
+					handleToastInfo({
+						code: res.status,
+						message: 'Se actualizo correctamente'
+					})
 				}
 			}
 
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				handleToastInfo({
+					code: err.response ? err.response.status : 500,
+					message: 'Hubo un error'
+				})
+			}
 		} finally {
 			handleClose();
 			handleOpenToast();

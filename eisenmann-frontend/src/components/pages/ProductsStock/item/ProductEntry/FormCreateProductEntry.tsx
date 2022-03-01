@@ -11,12 +11,15 @@ import { DialogContext } from '@/context/DialogContext';
 import { ProductEntryBase } from '@/interfaces/ProductEntry';
 import { createProductEntry } from 'src/services/product-entry';
 import { useProductStock } from '@/reducer/ProductStockReducer/hooks/useProductStock';
+import { useLayout } from '@/hooks/useLayout';
+import axios from 'axios';
 
 interface Props {
 	productStockId: number
 }
 export const FormCreateProductEntry = ({ productStockId }: Props) => {
 
+	const { handleOpenToast, handleToastInfo } = useLayout()
 	const { handleClose } = useContext(DialogContext)
 	const { addProductEntry, updateSummaryValues } = useProductStock()
 
@@ -32,13 +35,23 @@ export const FormCreateProductEntry = ({ productStockId }: Props) => {
 					const data = res.data
 					addProductEntry(data)
 					updateSummaryValues()
+					handleToastInfo({
+						code: res.status,
+						message: 'Se agrego la entrada correctamente '
+					})
 				}
 			}
 
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				handleToastInfo({
+					code: err.response ? err.response.status : 500,
+					message: 'Hubo un error'
+				})
+			}
 		} finally {
 			handleClose();
+			handleOpenToast()
 		}
 	}
 

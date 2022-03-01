@@ -7,6 +7,7 @@ export const getQueryParams = (query: ParsedUrlQuery) => {
 	let queryParams = '';
 
 	if (query.page) queryParams = `page=${query.page}&`
+	if (query.date) queryParams = `${queryParams}date=${query.date}&`
 	if (query.page_size) queryParams = `${queryParams}page_size=${query.page_size}&`
 	if (query.ordering) queryParams = `${queryParams}ordering=${query.ordering}&`
 

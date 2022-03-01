@@ -14,14 +14,10 @@ export const ProductStock = () => {
 
 	const { productStock } = useProductStock()
 
-	const [openToast, setOpenToast] = useState(false);
 	const [openDialog, setOpenDialog] = useState(false);
 
 	const handleOpenDialog = () => setOpenDialog(true);
 	const handleCloseDialog = () => setOpenDialog(false);
-
-	const handleOpenToast = () => setOpenToast(true);
-	const handleCloseToast = () => setOpenToast(false);
 
 	return (
 		<Box>
@@ -34,9 +30,7 @@ export const ProductStock = () => {
 				handleClose={handleCloseDialog}
 				handleOpen={handleOpenDialog}
 			>
-				<FormEditProductStock
-					handleOpenToast={handleOpenToast}
-				/>
+				<FormEditProductStock />
 			</DialogCustom>
 			<Box>
 				<Box sx={{ mb: 5 }}>
@@ -77,15 +71,6 @@ export const ProductStock = () => {
 				</Box>
 				{/* Product Entries */}
 			</Box>
-			<Snackbar
-				open={openToast}
-				autoHideDuration={6000}
-				onClose={handleCloseToast}
-			>
-				<Alert onClose={handleCloseToast} severity="success" sx={{ width: '100%' }}>
-					Producto Stock actualizado
-				</Alert>
-			</Snackbar>
 		</Box >
 	)
 }

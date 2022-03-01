@@ -13,14 +13,16 @@ import { ProductUnitSelect } from '../common/ProductUnitSelect';
 import { editProduct } from 'src/services/products';
 import { useContext } from 'react';
 import { DialogContext } from '@/context/DialogContext';
+import { useLayout } from '@/hooks/useLayout';
+import axios from 'axios';
 
 interface Props {
 	product: ProductDetail
 	setProduct: (value: ProductDetail) => void
-	handleOpenToast: () => void
 }
-export const FormEditProduct = ({ setProduct, product, handleOpenToast }: Props) => {
+export const FormEditProduct = ({ setProduct, product }: Props) => {
 
+	const { handleOpenToast, handleToastInfo } = useLayout()
 	const { handleClose } = useContext(DialogContext)
 
 	const editData = async (value: ProductBase) => {
@@ -32,13 +34,21 @@ export const FormEditProduct = ({ setProduct, product, handleOpenToast }: Props)
 			if (session?.accessToken) {
 				const res = await editProduct({ token: session.accessToken, id: product.id, product: value })
 				if (res.status === 200) {
-					const data = res.data
-					setProduct(data)
+					setProduct(res.data)
+					handleToastInfo({
+						code: res.status,
+						message: 'Se edito el Producto correctamente.'
+					})
 				}
 			}
 
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				handleToastInfo({
+					code: err.response ? err.response.status : 500,
+					message: 'Hubo un error'
+				})
+			}
 		} finally {
 			handleClose();
 			handleOpenToast();

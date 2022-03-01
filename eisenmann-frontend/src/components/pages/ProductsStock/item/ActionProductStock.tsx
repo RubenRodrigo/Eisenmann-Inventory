@@ -10,12 +10,15 @@ import { useState } from 'react';
 import { DialogCustom } from '@/components/Dialog/DialogCustom';
 import { FormCreateProductEntry } from './ProductEntry/FormCreateProductEntry';
 import { deleteProductStock } from 'src/services/product-stock';
+import axios from 'axios';
+import { useLayout } from '@/hooks/useLayout';
 
 interface Props {
 	productStockId: number
 }
 
 export const ActionProductStock = ({ productStockId }: Props) => {
+	const { handleOpenToast, handleToastInfo } = useLayout()
 	const [openDialogAddEntry, setOpenDialogAddEntry] = useState(false)
 	const router = useRouter()
 
@@ -28,13 +31,24 @@ export const ActionProductStock = ({ productStockId }: Props) => {
 			const session = await getSession()
 			if (session) {
 				const res = await deleteProductStock({ token: session.accessToken, id: productStockId })
-				console.log(res);
-				res.status === 204 && router.replace('/productos-stock')
+				if (res.status === 204) {
+					handleToastInfo({
+						code: res.status,
+						message: 'Se elimino el ProductoStock correctamente.'
+					})
+					router.replace('/productos-stock')
+				}
 			}
-		} catch (e) {
-			console.log(e);
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				handleToastInfo({
+					code: err.response ? err.response.status : 500,
+					message: 'Hubo un error'
+				})
+			}
 		} finally {
 			onClose()
+			handleOpenToast()
 		}
 	}
 

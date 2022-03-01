@@ -3,17 +3,14 @@ import { tableCellClasses } from '@mui/material/TableCell';
 
 interface Props {
 	children?: JSX.Element
-	isItemSelected: boolean;
 }
 
-export const OrderedTableRow = ({ children, isItemSelected }: Props) => {
+export const OrderedTableRow = ({ children }: Props) => {
 	return (
 		<TableRow
 			hover
 			role="checkbox"
-			aria-checked={isItemSelected}
 			tabIndex={-1}
-			selected={isItemSelected}
 			sx={{
 				[`& .${tableCellClasses.body}`]: {
 					fontSize: 15

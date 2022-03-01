@@ -70,14 +70,20 @@ class ProductStockViewSet(viewsets.ModelViewSet):
 
         If values are no provided, DRF will use year and month of the current date.
         """
-
         dt_init, dt_end = get_date_init_end(request)
+
+        # Ordering by query_param
+        ordering = self.ordering
+        ordering_req = request.query_params.get('ordering')
+        if ordering_req in self.ordering_fields:
+            ordering = [ordering_req]
 
         queryset = self.get_queryset()
         product_stock = queryset.filter(
             created_at__gte=dt_init,
             created_at__lt=dt_end
-        ).order_by('-created_at')
+        ).order_by(*ordering)
+
         return product_stock
         # serializer = self.get_serializer_class()
         # serializer = serializer(product_stock, many=True)

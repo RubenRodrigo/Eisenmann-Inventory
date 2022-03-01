@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 // NextJS
 import { useRouter } from 'next/router';
 // Mui
-import { Box, Checkbox, TableHead, TableRow, TableSortLabel } from "@mui/material";
+import { Box, TableHead, TableRow, TableSortLabel } from "@mui/material";
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { alpha } from '@mui/material/styles';
 import { visuallyHidden } from '@mui/utils';
@@ -13,12 +13,9 @@ import { HeadCell, Order } from '@/interfaces/TableInterface';
 // type ItemsMap<T> = { [key: string]: T }
 interface Props<T> {
 	headCells: readonly HeadCell<T>[]
-	numSelected: number;
 	order: Order;
 	orderBy: keyof T;
-	rowCount: number;
 	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof T) => void;
-	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const OrderedTableHead = <T extends object>(props: Props<T>) => {
@@ -27,11 +24,8 @@ export const OrderedTableHead = <T extends object>(props: Props<T>) => {
 	const isMounted = useRef(false)
 	const {
 		headCells,
-		numSelected,
 		order, orderBy,
-		rowCount,
 		onRequestSort,
-		onSelectAllClick,
 	} = props;
 
 	const createSortHandler = (property: keyof T | 'actions') => (event: React.MouseEvent<unknown>) => {
@@ -74,17 +68,6 @@ export const OrderedTableHead = <T extends object>(props: Props<T>) => {
 					},
 				})}
 			>
-				<TableCell padding="checkbox">
-					<Checkbox
-						color="primary"
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount > 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-						inputProps={{
-							'aria-label': 'select all desserts',
-						}}
-					/>
-				</TableCell>
 				{headCells.map((headCell) => (
 					<TableCell
 						key={headCell.id}

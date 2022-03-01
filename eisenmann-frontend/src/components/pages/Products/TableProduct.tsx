@@ -35,17 +35,12 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 					emptyRows,
 					order,
 					orderBy,
-					selected,
-					handleSelectAllClick,
-					handleSelectOneClick,
 					handleRequestSort,
-					isSelected,
 				}) => {
 					return (
 						<>
 							<OrderedTableToolbar
 								name='Productos'
-								numSelected={selected.length}
 							/>
 							<Table
 								sx={{
@@ -58,10 +53,8 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 								size='medium'
 							>
 								<OrderedTableHead<Product>
-									numSelected={selected.length}
 									order={order}
 									orderBy={orderBy}
-									onSelectAllClick={handleSelectAllClick}
 									onRequestSort={handleRequestSort}
 									rowCount={data.results.length}
 									headCells={headCellsProduct}
@@ -73,17 +66,13 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 											<OrderedTableRowLoading colSpan={8} size={80} />
 											:
 											data.results.map((row) => {
-												const isItemSelected = isSelected(row.id);
 												const labelId = `enhanced-table-checkbox-${row.id}`;
 												return (
 													<OrderedTableRow
 														key={row.id}
-														isItemSelected={isItemSelected}
 													>
 														<TableProductRow
-															isItemSelected={isItemSelected}
 															row={row}
-															handleClick={handleSelectOneClick}
 															labelId={labelId}
 														/>
 													</OrderedTableRow>

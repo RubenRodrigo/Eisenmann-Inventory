@@ -15,9 +15,5 @@ export interface TableContainerHandler<T> {
 	emptyRows: number
 	order: Order;
 	orderBy: keyof T;
-	selected: readonly number[];
-	handleSelectAllClick: (target: ChangeEvent<HTMLInputElement>) => void; // Select all rows
-	handleSelectOneClick: (event: MouseEvent<unknown>, id: number) => void; // Select only one row
 	handleRequestSort: (event: MouseEvent<unknown>, property: keyof T) => void; // Fields to sort
-	isSelected: (id: number) => boolean; // if row is selected 
 }
