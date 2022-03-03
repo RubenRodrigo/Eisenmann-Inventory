@@ -4,7 +4,7 @@ import { ProductStockDetail } from "@/interfaces/ProductStock";
 import { ProductStockState } from "@/reducer/ProductStockReducer/interfaces/interfaces";
 import { ProductEntry } from "@/interfaces/ProductEntry";
 
-type TodoContextProps = {
+type ProductStockContextProps = {
 	productStockState: ProductStockState
 	loadProductStock: (value: ProductStockDetail) => void
 	addProductEntry: (value: ProductEntry) => void
@@ -12,4 +12,4 @@ type TodoContextProps = {
 	updateSummaryValues: () => void
 }
 
-export const ProductStockContext = createContext<TodoContextProps>({} as TodoContextProps);
+export const ProductStockContext = createContext<ProductStockContextProps>({} as ProductStockContextProps);

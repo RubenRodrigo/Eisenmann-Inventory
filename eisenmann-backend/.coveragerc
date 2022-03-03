@@ -5,6 +5,7 @@ omit =
   *settings*,
   *tests/*,
   *urls.py,
+  *__init__.py,
   *wsgi/*,
   */venv/*,
   manage.py

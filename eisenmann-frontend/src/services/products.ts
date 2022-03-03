@@ -15,8 +15,10 @@ export const getProductList = async ({ token, queryParams }: GetProductListProps
   )
 }
 
-export const getProductListAll = async ({ token }: Props) => {
-  return await axiosInstanceServerSide(token).get('/product/product/list_all')
+export const getProductListAll = async ({ token, queryParams }: GetProductListProps) => {
+  return await axiosInstanceServerSide(token).get(
+    '/product/product_list' + (queryParams !== undefined ? queryParams : '')
+  )
 }
 
 interface GetProductProps extends Props {

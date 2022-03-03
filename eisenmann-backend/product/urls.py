@@ -14,7 +14,11 @@ router.register(
     views.ProductViewSet,
     basename='product'
 )
-
+router.register(
+    r'product_list',
+    views.ProductAllListView,
+    basename='product_list'
+)
 router.register(
     r'product_stock',
     views.ProductStockViewSet,

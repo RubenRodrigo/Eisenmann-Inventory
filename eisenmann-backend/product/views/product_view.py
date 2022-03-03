@@ -1,5 +1,5 @@
 # DRF
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -21,6 +21,15 @@ from utils.date_utils import get_date_init_end
 from core.pagination import paginate
 
 
+class ProductAllListView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    pagination_class = None
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    ordering_fields = ['created_at']
+    ordering = ['-created_at']
+    filterset_fields = ['state']
+
+
 class ProductViewSet(viewsets.ModelViewSet):
     """
     Product View. If there are any filter_query, it will list all Product's
@@ -30,19 +39,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'type', 'unit', 'code']
     ordering = ['-created_at']
 
-    @action(detail=False, methods=['get'])
-    def list_all(self, request):
-        """
-        List all Products
-        ---
-        """
-        queryset = self.get_queryset()
-        serializer = self.get_serializer_class()
-        serializer = serializer(queryset, many=True)
-        return Response(serializer.data)
-
     def get_serializer_class(self):
-        if self.action in ['list', 'list_all']:
+        if self.action in ['list']:
             return ProductSerializer
         else:
             return ProductDetailedSerializer

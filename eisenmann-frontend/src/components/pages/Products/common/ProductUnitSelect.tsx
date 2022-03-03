@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getSession, signOut } from 'next-auth/react';
-import { getUnitList } from 'src/services/units';
+import { getUnitList } from 'src/services/product-unit';
 import { MySelect } from '../../../Inputs/MySelect';
 import { ProductUnit } from '@/interfaces/ProductUnit';
 

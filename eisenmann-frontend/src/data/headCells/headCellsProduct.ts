@@ -25,6 +25,14 @@ export const headCellsProduct: readonly HeadCell<Product>[] = [
 		isAllowed: true,
 	},
 	{
+		id: 'state',
+		numeric: false,
+		disablePadding: false,
+		label: 'Estado',
+		isAllowed: false,
+		isAction: true
+	},
+	{
 		id: 'code',
 		numeric: true,
 		disablePadding: false,

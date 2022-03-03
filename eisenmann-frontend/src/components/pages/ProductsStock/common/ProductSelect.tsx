@@ -12,14 +12,14 @@ interface Props {
 }
 
 // TODO: Create a Custom Hook which handles the state
-const getData = async () => {
+const getData = async (queryParams: string) => {
 	try {
 		const session = await getSession()
 		if (session && session.error) {
 			signOut()
 		}
 		if (session?.accessToken) {
-			const res = await getProductListAll({ token: session.accessToken })
+			const res = await getProductListAll({ token: session.accessToken, queryParams })
 			const data: Product[] = res.data
 			return data
 		}
@@ -41,7 +41,7 @@ export const ProductSelect = ({ label, ...props }: Props) => {
 		}
 
 		(async () => {
-			const data = await getData();
+			const data = await getData('?state=true');
 			if (data) {
 				setOptions([...data]);
 			}

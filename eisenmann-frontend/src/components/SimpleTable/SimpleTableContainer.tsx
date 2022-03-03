@@ -10,12 +10,16 @@ interface Props<T> {
 	emptyRows?: number;
 	headCells: readonly HeadCell<T>[];
 	children: JSX.Element | JSX.Element[] | undefined;
+	toolbarComponent?: JSX.Element;
 }
 
-export const SimpleTableContainer = <T extends { id: number },>({ emptyRows, headCells, children }: Props<T>) => {
+export const SimpleTableContainer = <T extends { id: number },>({ emptyRows, headCells, children, toolbarComponent }: Props<T>) => {
 	return (
 		<Box sx={{ width: '100%' }}>
 			<TableContainer>
+				{
+					toolbarComponent && toolbarComponent
+				}
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<SimpleTableHead headCells={headCells} />
 					<TableBody>

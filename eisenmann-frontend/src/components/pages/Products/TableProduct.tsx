@@ -56,7 +56,6 @@ export const TableProduct = ({ data, isLoading }: Props) => {
 									order={order}
 									orderBy={orderBy}
 									onRequestSort={handleRequestSort}
-									rowCount={data.results.length}
 									headCells={headCellsProduct}
 								/>
 								<TableBody>
