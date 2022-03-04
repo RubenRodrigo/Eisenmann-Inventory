@@ -6,7 +6,7 @@ import { Layout } from "@/components/Layout";
 import { Box, Button, Paper } from "@mui/material";
 import { NextLinkComposed } from "@/components/Link";
 import AddIcon from '@mui/icons-material/Add';
-import { ProductStockResponse } from "@/interfaces/ProductStock";
+import { ProductStock, ProductStockResponse } from "@/interfaces/ProductStock";
 import { useRouter } from "next/router";
 import { getQueryParams } from "@/helpers/utils";
 import { getSession, signOut } from "next-auth/react";
@@ -56,6 +56,12 @@ const Index = () => {
 		getData(queryParams)
 	}, [query])
 
+	const handleUpdateProduct = (product: ProductStock) => {
+		setProducts((prev) => ({
+			...prev,
+			results: prev.results.map((e) => e.id === product.id ? product : e)
+		}))
+	}
 
 	return (
 		<Box>
@@ -82,6 +88,7 @@ const Index = () => {
 					<TableProductStock
 						isLoading={isLoading}
 						data={products}
+						handleUpdateProduct={handleUpdateProduct}
 					/>
 				</Paper>
 			</Box>

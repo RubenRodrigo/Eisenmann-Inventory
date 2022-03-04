@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 
 	if (token && params && params.id) {
 		try {
-			const res = await getProductStock({ token, id })
+			const res = await getProductStock({ token, id: parseInt(id) })
 			if (res.status !== 200) {
 				return {
 					notFound: true,

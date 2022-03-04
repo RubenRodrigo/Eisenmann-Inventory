@@ -22,10 +22,11 @@ import { CalendarPicker } from './CalendarPicker';
 
 interface Props {
 	data: ProductStockResponse;
-	isLoading: boolean,
+	isLoading: boolean;
+	handleUpdateProduct: (productStock: ProductStock) => void;
 }
 
-export const TableProductStock = ({ data, isLoading }: Props) => {
+export const TableProductStock = ({ handleUpdateProduct, data, isLoading }: Props) => {
 	return (
 		<OrderedTableContainer
 			orderDefault='created_at'
@@ -74,6 +75,7 @@ export const TableProductStock = ({ data, isLoading }: Props) => {
 														key={row.id}
 													>
 														<TableProductStockRow
+															handleUpdateProduct={handleUpdateProduct}
 															row={row}
 															labelId={labelId}
 														/>

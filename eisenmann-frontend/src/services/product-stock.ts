@@ -15,7 +15,7 @@ export const getProductStockList = async ({ token, queryParams }: GetProductStoc
 }
 
 interface GetProductStockProps extends Props {
-  id: string;
+  id: number;
 }
 
 export const getProductStock = async ({ token, id }: GetProductStockProps) => {
@@ -43,10 +43,32 @@ export const editProductStock = async ({ token, id, productStock }: EditProductS
   })
 }
 
+interface EditProductRealStockProps extends Props {
+  id: number;
+  realStock: number;
+}
+
+export const editProductRealStock = async ({ token, id, realStock }: EditProductRealStockProps) => {
+  return await axiosInstanceServerSide(token).patch(`/product/product_stock/${id}/`, {
+    real_stock: realStock
+  })
+}
+
 interface DeleteProductStockProps extends Props {
   id: number;
 }
 
 export const deleteProductStock = async ({ token, id }: DeleteProductStockProps) => {
   return await axiosInstanceServerSide(token).delete(`/product/product_stock/${id}/`)
+}
+
+
+interface createProductStockByRealProps extends Props {
+  id: number;
+}
+
+export const createProductStockByReal = async ({ token, id }: createProductStockByRealProps) => {
+  return await axiosInstanceServerSide(token).post('/product/product_stock/set_real_stock/', {
+    product_stock: id
+  })
 }

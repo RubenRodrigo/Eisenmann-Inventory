@@ -2,7 +2,7 @@ import { Box, Paper } from '@mui/material';
 import { Header } from '@/components/Header';
 import { Layout } from '@/components/Layout';
 import { ReactElement } from 'react'
-import { FormCreateProductStock } from '@/components/pages/ProductsStock/create/FormCreateProductStock';
+import { FormCreateProductStock } from '@/components/pages/ProductsStock/forms/create/FormCreateProductStock';
 
 const Index = () => {
 	return (

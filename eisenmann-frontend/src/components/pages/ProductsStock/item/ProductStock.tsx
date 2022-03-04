@@ -7,7 +7,7 @@ import { ActionProductStock } from './ActionProductStock';
 import { CardInfo } from './Cards/CardInfo';
 import { CardResume } from './Cards/CardResume';
 import { TableProductEntries } from './TableProductEntries';
-import { FormEditProductStock } from '../edit/FormEditProductStock';
+import { FormEditProductStock } from '../forms/edit/FormEditProductStock';
 import { useProductStock } from '@/reducer/ProductStockReducer/hooks/useProductStock';
 
 export const ProductStock = () => {
@@ -22,7 +22,7 @@ export const ProductStock = () => {
 	return (
 		<Box>
 			<Header title={`${productStock.product_detail.name ? productStock.product_detail.name : 'Producto Stock'}`}>
-				<ActionProductStock productStockId={productStock.id} />
+				<ActionProductStock />
 			</Header>
 			<DialogCustom
 				title='Editar Producto'

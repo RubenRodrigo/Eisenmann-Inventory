@@ -10,7 +10,7 @@ import { Box, Button, Grid } from '@mui/material';
 
 import { MyCheckbox } from '@/components/Inputs/MyCheckbox';
 import { MyInput } from '@/components/Inputs/MyInput';
-import { ProductSelect } from '../common/ProductSelect';
+import { ProductSelect } from '../../common/ProductSelect';
 import { ProductStockBase } from '@/interfaces/ProductStock';
 import { createProductStock } from 'src/services/product-stock';
 import { useLayout } from '@/hooks/useLayout';

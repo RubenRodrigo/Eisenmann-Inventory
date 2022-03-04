@@ -1,3 +1,5 @@
+from django_filters import rest_framework as filters
+from inflection import camelize
 # DRF
 from rest_framework import viewsets, mixins
 from rest_framework import status
@@ -21,13 +23,58 @@ from utils.date_utils import get_date_init_end
 from core.pagination import paginate
 
 
+# class ProductFilter(filters.FilterSet):
+#     class Meta:
+#         model = Product
+#         fields = ['state']
+
+
 class ProductAllListView(mixins.ListModelMixin, viewsets.GenericViewSet):
     pagination_class = None
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     ordering_fields = ['created_at']
     ordering = ['-created_at']
-    filterset_fields = ['state']
+
+    def list(self, request):
+        """
+        List all ProductStocks
+        ---
+        - Query Parameters:
+            - **year: string** -> Value used to filter products by Year (no required)
+            - **month: string** -> Value used to filter products by Month (no required)
+
+        If values are no provided, DRF will use year and month of the current date.
+        """
+        dt_init, dt_end = get_date_init_end(request)
+
+        # Ordering by query_param
+        ordering = self.ordering
+        ordering_req = request.query_params.get('ordering')
+        state = request.query_params.get('state')
+
+        if ordering_req in self.ordering_fields:
+            ordering = [ordering_req]
+
+        if state is None:
+            state = True
+        else:
+            state = camelize(state)
+
+        print(dt_init)
+        print(dt_end)
+
+        queryset = self.get_queryset()
+        product_stock = queryset.filter(state=state).exclude(
+            product_stock__created_at__gte=dt_init,
+            product_stock__created_at__lt=dt_end
+        ).order_by(*ordering)
+
+        print(product_stock.query)
+
+        serializer = self.get_serializer_class()
+        serializer = serializer(product_stock, many=True)
+        return Response(serializer.data)
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -93,7 +140,7 @@ class ProductStockViewSet(viewsets.ModelViewSet):
         serializer = serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_serializer_class(self):
