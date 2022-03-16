@@ -43,3 +43,6 @@ class ServiceProduct(BaseModel):
     def save(self, *args, **kwargs):
         self.total_cost = self.quantity * self.product_stock.current_price
         return super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-created_at']

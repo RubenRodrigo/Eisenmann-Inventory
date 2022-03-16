@@ -34,5 +34,5 @@ class ServiceSerializer(serializers.ModelSerializer):
         ]
 
     def get_service_products(self, instance):
-        data = instance.service_products.all().order_by('-id')
+        data = instance.service_product.all().order_by('-id')
         return ServiceProductSerializer(data, many=True, read_only=True).data

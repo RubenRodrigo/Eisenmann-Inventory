@@ -16,6 +16,8 @@ from service.serializers.service_serializer import ServiceSerializer
 class ServiceViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
     queryset = Service.objects.all()
+    ordering_fields = ['created_at']
+    ordering = ['-created_at']
 
 
 class ServiceProductViewSet(viewsets.ModelViewSet):

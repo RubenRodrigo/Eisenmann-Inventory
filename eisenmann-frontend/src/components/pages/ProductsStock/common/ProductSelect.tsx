@@ -20,6 +20,7 @@ const getData = async (queryParams: string) => {
 		}
 		if (session?.accessToken) {
 			const res = await getProductListAll({ token: session.accessToken, queryParams })
+			console.log(res);
 			const data: Product[] = res.data
 			return data
 		}
@@ -33,7 +34,7 @@ export const ProductSelect = ({ label, ...props }: Props) => {
 
 	const [open, setOpen] = useState(false);
 	const [options, setOptions] = useState<readonly Product[]>([]);
-	const loading = open && options.length === 0;
+	const loading = open && options.length >= 0;
 
 	useEffect(() => {
 		if (!loading) {
@@ -41,7 +42,9 @@ export const ProductSelect = ({ label, ...props }: Props) => {
 		}
 
 		(async () => {
+			console.log(loading);
 			const data = await getData('?state=true');
+			console.log(data);
 			if (data) {
 				setOptions([...data]);
 			}

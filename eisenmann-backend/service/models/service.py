@@ -35,6 +35,6 @@ class Service(BaseModel):
 
     @property
     def final_price(self):
-        service_products = self.service_products.all()
+        service_products = self.service_product.all()
         total = sum([item.total_cost for item in service_products])
         return total

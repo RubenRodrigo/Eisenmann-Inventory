@@ -23,12 +23,6 @@ from utils.date_utils import get_date_init_end
 from core.pagination import paginate
 
 
-# class ProductFilter(filters.FilterSet):
-#     class Meta:
-#         model = Product
-#         fields = ['state']
-
-
 class ProductAllListView(mixins.ListModelMixin, viewsets.GenericViewSet):
     pagination_class = None
     queryset = Product.objects.all()
@@ -61,16 +55,12 @@ class ProductAllListView(mixins.ListModelMixin, viewsets.GenericViewSet):
         else:
             state = camelize(state)
 
-        print(dt_init)
-        print(dt_end)
-
         queryset = self.get_queryset()
-        product_stock = queryset.filter(state=state).exclude(
-            product_stock__created_at__gte=dt_init,
-            product_stock__created_at__lt=dt_end
+        product_stock = queryset.filter(state=state)
+        product_stock = product_stock.exclude(
+            product_stock__created_at__year=dt_init.year,
+            product_stock__created_at__month=dt_init.month
         ).order_by(*ordering)
-
-        print(product_stock.query)
 
         serializer = self.get_serializer_class()
         serializer = serializer(product_stock, many=True)

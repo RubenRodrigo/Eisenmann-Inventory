@@ -1,8 +1,6 @@
-import { isArrayOfStrings } from "@/helpers/utils";
 import { LoginFormValues } from "@/interfaces/Login";
 import { Link, Button, CircularProgress, TextField } from "@mui/material";
-import { getServerSession } from "next-auth";
-import { signIn, SignInResponse } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useState } from "react";
 
