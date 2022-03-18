@@ -10,7 +10,13 @@ interface GetProductStockListProps extends Props {
 }
 export const getProductStockList = async ({ token, queryParams }: GetProductStockListProps) => {
   return await axiosInstanceServerSide(token).get(
-    '/product/product_stock/' + (queryParams !== undefined ? queryParams : '')
+    '/product/product_stock/?' + (queryParams !== undefined ? queryParams : '')
+  )
+}
+
+export const getProductStockListAll = async ({ token, queryParams }: GetProductStockListProps) => {
+  return await axiosInstanceServerSide(token).get(
+    '/product/product_stock_list/?' + (queryParams !== undefined ? queryParams : '')
   )
 }
 

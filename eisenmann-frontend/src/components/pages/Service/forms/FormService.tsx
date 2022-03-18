@@ -1,51 +1,48 @@
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import { format } from 'date-fns'
+
 import { Box, Button, Grid } from '@mui/material'
 
 import { MyInput } from '@/components/Inputs/MyInput'
-import { ProductSelect } from '../../ProductsStock/common/ProductSelect'
 import { MyCheckbox } from '@/components/Inputs/MyCheckbox'
 import { MyDatePicker } from '@/components/Inputs/MyDatePicker'
+import { SelectClient } from '@/components/CustomFields/SelectClient'
+import { ServiceBase, ServiceFormValues } from '@/interfaces/Service'
 
-type Props = {}
+type Props = {
+	INITIAL_VALUES: ServiceFormValues
+	saveData: (values: ServiceBase) => Promise<void>
+}
 
-export const FormCreateService = (props: Props) => {
+export const FormService = ({ INITIAL_VALUES, saveData }: Props) => {
+
 	return (
 		<Formik
-			initialValues={{
-				// client: {
-				// 	id: 0,
-				// 	name: '',
-				// },
-				code: "150015",
-				estimated_price: "5000",
-				init_date: new Date(),
-				end_date: new Date(),
-				observations: "",
-				name: "Corte en CNC",
-				state: false,
-			}}
+			initialValues={INITIAL_VALUES}
 			onSubmit={(values) => {
-				console.log(values);
-
+				saveData({
+					...values,
+					init_date: format(values.init_date, 'yyyy-MM-dd'),
+					end_date: format(values.end_date, 'yyyy-MM-dd'),
+					client: values.client?.id ?? 0
+				})
 			}}
 			validationSchema={Yup.object({
-				// client: Yup.object().shape({
-				// 	id: Yup.number()
-				// 		.notOneOf([0], 'No puede estar vacio')
-				// 		.required('Debe seleccionar un valor'),
-				// }),
+				client: Yup.object()
+					.required('Debe escoger un cliente')
+					.shape({
+						id: Yup.number()
+							.required('Requerido')
+					})
+					.nullable(),
 				name: Yup.string()
-					.required('Este campo no puede estar vacio'),
-				code: Yup.string()
-					.required('Este campo no puede estar vacio'),
+					.required('El nombre es obligatorio'),
 				estimated_price: Yup.number()
-					.required('Este campo no puede estar vacio'),
+					.required('El precio estimado es obligatorio'),
 				init_date: Yup.date()
 					.required('Este campo no puede estar vacio'),
 				end_date: Yup.date()
-					.required('Este campo no puede estar vacio'),
-				state: Yup.boolean()
 					.required('Este campo no puede estar vacio'),
 			})}
 		>
@@ -53,13 +50,13 @@ export const FormCreateService = (props: Props) => {
 				(forms) => (
 					<Form>
 						<Grid container spacing={2}>
-							{/* <Grid item xs={6}>
-								<ProductSelect
-									label="Producto"
-									name="product"
-									placeholder='Producto'
+							<Grid item xs={6}>
+								<SelectClient
+									label='Cliente'
+									name="client"
+									placeholder="Cliente"
 								/>
-							</Grid> */}
+							</Grid>
 							<Grid item xs={6}>
 								<MyInput
 									label="Nombre"
@@ -98,6 +95,15 @@ export const FormCreateService = (props: Props) => {
 									value={forms.values.end_date}
 								/>
 							</Grid>
+
+							<Grid item xs={12}>
+								<MyInput
+									label="Observaciones"
+									name="observations"
+									multiline
+									rows={4}
+								/>
+							</Grid>
 							<Grid item xs={12}>
 								<MyCheckbox
 									label="Activar servicio"
@@ -114,7 +120,7 @@ export const FormCreateService = (props: Props) => {
 										variant="contained"
 										type='submit'
 									>
-										Crear producto
+										Guardar Datos
 									</Button>
 								</Box>
 							</Grid>

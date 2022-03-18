@@ -97,7 +97,7 @@ export const TableProductStockRow = ({ handleUpdateProduct, row, labelId }: Prop
 				{row.product_detail.name}
 			</TableCell>
 			<TableCell>{dateToString(row.created_at)}</TableCell>
-			<TableCell >
+			<TableCell align='center'>
 				<StateButton
 					state={row.state}
 					buttonSx={{

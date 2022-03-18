@@ -23,7 +23,7 @@ export const headCellsProductStock: readonly HeadCell<ProductStock>[] = [
 		disablePadding: false,
 		label: 'Estado',
 		isAllowed: false,
-		isAction: false
+		isAction: true
 	},
 	{
 		id: 'total_stock',

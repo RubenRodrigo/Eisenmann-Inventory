@@ -3,7 +3,7 @@ import { ReactElement, useState } from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerSession, Session } from 'next-auth';
 
-import { Alert, Box, Button, Card, CardHeader, Divider, Grid, Snackbar } from '@mui/material';
+import { Box, Button, Card, CardHeader, Divider, Grid } from '@mui/material';
 
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ProductDetail } from '@/interfaces/Product';
