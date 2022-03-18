@@ -1,4 +1,4 @@
-import { TableUnitProvider } from '@/components/providers/ProductUnitTableProvider';
+import { TableUnitProvider } from 'src/providers/ProductUnitTableProvider';
 import { TableUnitContainer } from './TableUnitContainer';
 
 export const TableUnit = () => {

@@ -9,7 +9,7 @@ import { getProductStock } from 'src/services/product-stock';
 
 import { Layout } from '@/components/Layout';
 
-import { ProductStockProvider } from '@/components/providers/ProductStockProvider';
+import { ProductStockProvider } from 'src/providers/ProductStockProvider';
 import { ProductStock } from '@/components/pages/ProductsStock/item/ProductStock';
 
 const Index = ({ session, data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {

@@ -16,5 +16,6 @@ class DocumentTypeViewSet(viewsets.ModelViewSet):
 
 
 class ClientViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     serializer_class = ClientSerializer
     queryset = Client.objects.all()

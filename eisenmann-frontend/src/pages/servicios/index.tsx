@@ -57,7 +57,6 @@ interface PageProps {
 	data: ServiceResponse
 }
 
-
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
 	const query = context.query;
 

@@ -140,3 +140,27 @@ class ProductStockViewSet(viewsets.ModelViewSet):
             return ProductStockSerializer
         else:
             return ProductStockDetailedSerializer
+
+
+class ProductStockFilter(filters.FilterSet):
+    year = filters.NumberFilter(field_name="created_at", lookup_expr='year')
+    month = filters.NumberFilter(field_name="created_at", lookup_expr='month')
+    entries = filters.BooleanFilter(
+        field_name="product_entry", lookup_expr='isnull')
+
+    class Meta:
+        model = ProductStock
+        fields = ['year', 'month', 'state', 'entries']
+
+
+class ProductStockAllListView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    pagination_class = None
+    queryset = ProductStock.objects.all()
+    serializer_class = ProductStockSerializer
+    ordering_fields = ['created_at']
+    ordering = ['-created_at']
+    filterset_class = ProductStockFilter
+
+    # def get_queryset(self):
+    #     queryset = ProductStock.objects.all()
+    #     return super().get_queryset()

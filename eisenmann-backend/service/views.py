@@ -10,14 +10,19 @@ from rest_framework import viewsets
 from service.models.service import Service
 from service.models.service_product import ServiceProduct
 from service.serializers.service_product_serializer import ServiceProductSerializer
-from service.serializers.service_serializer import ServiceSerializer
+from service.serializers.service_serializer import ServiceDetailSerializer, ServiceSerializer
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    serializer_class = ServiceSerializer
     queryset = Service.objects.all()
     ordering_fields = ['created_at']
     ordering = ['-created_at']
+
+    def get_serializer_class(self):
+        if self.action in ['list']:
+            return ServiceSerializer
+        else:
+            return ServiceDetailSerializer
 
 
 class ServiceProductViewSet(viewsets.ModelViewSet):

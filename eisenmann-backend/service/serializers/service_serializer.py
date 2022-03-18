@@ -7,9 +7,9 @@ from service.serializers.service_product_serializer import ServiceProductSeriali
 
 # Serializers para los servicios
 
-
-class ServiceSerializer(serializers.ModelSerializer):
-    service_products = serializers.SerializerMethodField()
+#################################### BASE SERIALIZERS ####################################
+class ServiceBaseSerializer(serializers.ModelSerializer):
+    """ BaseSerializer for Service with common fields """
     client_detail = ClientSerializer(source='client', read_only=True)
 
     class Meta:
@@ -27,12 +27,23 @@ class ServiceSerializer(serializers.ModelSerializer):
             'state',
             # Read only fields
             # Nested Fields
-            'service_products',
             'client_detail',
             # Attribute Fields
             'final_price',
         ]
 
-    def get_service_products(self, instance):
-        data = instance.service_product.all().order_by('-id')
-        return ServiceProductSerializer(data, many=True, read_only=True).data
+
+#################################### MODEL SERIALIZERS ####################################
+class ServiceSerializer(ServiceBaseSerializer):
+    """ For lists of Services """
+    pass
+
+
+class ServiceDetailSerializer(ServiceBaseSerializer):
+    """ For retrive an Service """
+    service_product = ServiceProductSerializer(many=True, read_only=True)
+
+    class Meta(ServiceBaseSerializer.Meta):
+        fields = ServiceBaseSerializer.Meta.fields + [
+            'service_product',
+        ]

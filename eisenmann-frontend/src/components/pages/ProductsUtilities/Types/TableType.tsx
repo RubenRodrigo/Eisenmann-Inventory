@@ -1,4 +1,4 @@
-import { TableTypeProvider } from '@/components/providers/ProductTypeTableProvider';
+import { TableTypeProvider } from 'src/providers/ProductTypeTableProvider';
 import { TableTypeContainer } from './TableTypeContainer';
 
 export const TableType = () => {

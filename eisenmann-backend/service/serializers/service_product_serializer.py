@@ -33,7 +33,9 @@ class ServiceProductSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['quantity'] > data['product_stock'].total_stock:
-            raise serializers.ValidationError("no_stock")
+            raise serializers.ValidationError(
+                {"quantity": "Stock insuficiente"}
+            )
         return data
 
     def create(self, validated_data):
