@@ -16,6 +16,7 @@ export interface ServiceBase {
 export interface Service extends ServiceBase {
 	id: number;
 	client_detail: Client;
+	client__name?: string;
 	final_price: number;
 }
 

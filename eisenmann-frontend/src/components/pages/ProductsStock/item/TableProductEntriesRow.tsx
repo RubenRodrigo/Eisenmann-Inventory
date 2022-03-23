@@ -6,6 +6,7 @@ import { dateToString } from '@/helpers/utils';
 import { getSession } from 'next-auth/react';
 import { deleteProductEntry } from 'src/services/product-entry';
 import { useProductStock } from '@/reducer/ProductStockReducer/hooks/useProductStock';
+import { DialogDelete } from '@/components/Dialog/DialogDelete';
 
 interface Props {
 	row: ProductEntry;
@@ -18,13 +19,13 @@ export const TableProductEntriesRow = ({ row }: Props) => {
 	/**
 	 * Delete a ProductEntry by ID and update ProductStockDetail.
 	 */
-	const handleDeleteProductStock = async (id: number) => {
+	const handleDeleteProductEntry = async () => {
 		try {
 			const session = await getSession()
 			if (session) {
-				const res = await deleteProductEntry({ token: session.accessToken, id })
+				const res = await deleteProductEntry({ token: session.accessToken, id: row.id })
 				if (res.status === 204) {
-					removeProductEntry(id)
+					removeProductEntry(row.id)
 					updateSummaryValues()
 				}
 			}
@@ -41,12 +42,21 @@ export const TableProductEntriesRow = ({ row }: Props) => {
 			<TableCell align="right">{row.total_cost}</TableCell>
 			<TableCell align="right">{dateToString(row.created_at)}</TableCell>
 			<TableCell align="center">
-				<IconButton
-					size="small"
-					onClick={() => handleDeleteProductStock(row.id)}
-				>
-					<DeleteForeverIcon />
-				</IconButton>
+				<DialogDelete
+					title='Eliminar Producto Stock'
+					successAction={() => {
+						handleDeleteProductEntry()
+					}}
+					openButton={
+						(open, close) =>
+							<IconButton
+								size="small"
+								onClick={open}
+							>
+								<DeleteForeverIcon />
+							</IconButton>
+					}
+				/>
 			</TableCell>
 		</>
 	)

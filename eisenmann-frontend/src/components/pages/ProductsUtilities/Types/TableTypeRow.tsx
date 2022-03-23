@@ -9,6 +9,7 @@ import { DialogCustom } from '@/components/Dialog/DialogCustom';
 import { FormEditType } from './FormEditType';
 import { useState } from 'react';
 import { useProductTypeTable } from '@/reducer/ProductTypeTableReducer/hooks/useProductTypeTable';
+import { DialogDelete } from '@/components/Dialog/DialogDelete';
 
 interface Props {
 	row: ProductType;
@@ -55,12 +56,22 @@ export const TableTypeRow = ({ row }: Props) => {
 			<TableCell>{row.name}</TableCell>
 			<TableCell>{row.description}</TableCell>
 			<TableCell align="center">
-				<IconButton
-					size="small"
-					onClick={() => handleDeleteProductType(row.id)}
-				>
-					<DeleteForeverIcon />
-				</IconButton>
+				<DialogDelete
+					title='Eliminar Tipo de Producto'
+					successAction={() => {
+						handleDeleteProductType(row.id)
+					}}
+					openButton={
+						(open, close) =>
+							<IconButton
+								size="small"
+								onClick={open}
+								disableRipple
+							>
+								<DeleteForeverIcon />
+							</IconButton>
+					}
+				/>
 				<IconButton
 					size="small"
 					onClick={handleOpenDialog}

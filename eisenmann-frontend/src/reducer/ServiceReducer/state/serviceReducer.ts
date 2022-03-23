@@ -22,6 +22,15 @@ export const serviceReducer = (state: ServiceState, action: ServiceAction): Serv
 					]
 				}
 			}
+		case 'removeServiceProduct':
+			return {
+				...state,
+				service: {
+					...service,
+					service_product: service.service_product.filter(e => e.id !== action.payload)
+				}
+			}
+
 		case 'updateSummaryValues':
 			const summary = service.service_product.reduce((total, current) => sumTotalValues(total, current), {
 				final_price: 0,

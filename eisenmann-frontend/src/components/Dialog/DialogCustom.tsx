@@ -36,8 +36,8 @@ export const DialogCustom = ({ open, handleClose, handleOpen, children, title, c
 						sx={{
 							display: 'flex',
 							flexDirection: 'column',
-							m: 'auto',
-							width: 'fit-content',
+							// m: 'auto',
+							// width: 'fit-content',
 						}}
 					>
 						{children}

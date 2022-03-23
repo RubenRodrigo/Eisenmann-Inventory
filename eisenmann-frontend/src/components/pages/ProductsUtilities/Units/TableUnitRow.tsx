@@ -10,6 +10,7 @@ import { DialogCustom } from '@/components/Dialog/DialogCustom';
 import { deleteProductUnit } from 'src/services/product-unit';
 import { FormEditUnit } from './FormEditUnit';
 import { useProductUnitTable } from '@/reducer/ProductUnitTableReducer/hooks/useProductUnitTable';
+import { DialogDelete } from '@/components/Dialog/DialogDelete';
 
 interface Props {
 	row: ProductUnit;
@@ -57,12 +58,22 @@ export const TableUnitRow = ({ row }: Props) => {
 			<TableCell>{row.description}</TableCell>
 			<TableCell>{row.abr}</TableCell>
 			<TableCell align="center">
-				<IconButton
-					size="small"
-					onClick={() => handleDeleteProductUnit(row.id)}
-				>
-					<DeleteForeverIcon />
-				</IconButton>
+				<DialogDelete
+					title='Eliminar Unidad de Producto'
+					successAction={() => {
+						handleDeleteProductUnit(row.id)
+					}}
+					openButton={
+						(open, close) =>
+							<IconButton
+								size="small"
+								onClick={open}
+								disableRipple
+							>
+								<DeleteForeverIcon />
+							</IconButton>
+					}
+				/>
 				<IconButton
 					size="small"
 					onClick={handleOpenDialog}

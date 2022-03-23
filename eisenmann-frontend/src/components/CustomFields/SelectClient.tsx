@@ -1,7 +1,7 @@
 import { Client } from '@/interfaces/Client';
 import { getSession } from 'next-auth/react';
 import React, { useState } from 'react'
-import { getClientList } from 'src/services/client';
+import { getClientListService } from 'src/services/client';
 import { SelectField } from '../Inputs/SelectField';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 const getData = async (): Promise<Client[]> => {
 	try {
 		const session = await getSession()
-		const res = await getClientList({ token: session?.accessToken ?? '' })
+		const res = await getClientListService({ token: session?.accessToken ?? '' })
 		const data = res.data
 		return data
 	} catch (error) {

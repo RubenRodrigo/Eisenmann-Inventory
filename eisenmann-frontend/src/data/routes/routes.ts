@@ -35,11 +35,6 @@ export const routes: NavRouteType[] = [
 				IconComponent: LocalLibraryIcon
 			},
 			{
-				path: '/utilidades-servicio',
-				name: 'Utilidades',
-				IconComponent: LibraryBooksIcon
-			},
-			{
 				path: '/clientes',
 				name: 'Clientes',
 				IconComponent: BadgeIcon

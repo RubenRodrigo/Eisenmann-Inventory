@@ -8,6 +8,7 @@ import { ActionMenu } from '@/components/ActionMenu/ActionMenu'
 import { deleteProduct } from 'src/services/products'
 import { useLayout } from '@/hooks/useLayout';
 import axios from 'axios';
+import { DialogDelete } from '@/components/Dialog/DialogDelete';
 
 interface Props {
 	productId: number
@@ -18,12 +19,11 @@ export const ActionProduct = ({ productId }: Props) => {
 	const { handleOpenToast, handleToastInfo } = useLayout()
 	const router = useRouter()
 
-	const handleOnClose = async (onClose: () => void) => {
+	const handleOnClose = async () => {
 		try {
 			const session = await getSession()
 			if (session) {
 				const res = await deleteProduct({ token: session.accessToken, id: productId })
-				console.log(res);
 				if (res.status === 204) {
 					handleToastInfo({
 						code: res.status,
@@ -40,7 +40,6 @@ export const ActionProduct = ({ productId }: Props) => {
 				})
 			}
 		} finally {
-			onClose()
 			handleOpenToast();
 		}
 	}
@@ -49,10 +48,24 @@ export const ActionProduct = ({ productId }: Props) => {
 		<ActionMenu>
 			{
 				({ onClose }) => (
-					<MenuItem onClick={() => handleOnClose(onClose)} disableRipple>
-						<DeleteIcon />
-						Eliminar Producto
-					</MenuItem>
+					<DialogDelete
+						title='Eliminar Producto'
+						successAction={() => {
+							handleOnClose()
+							onClose()
+						}}
+						cancelAction={onClose}
+						openButton={
+							(open, close) =>
+								<MenuItem
+									onClick={open}
+									disableRipple
+								>
+									<DeleteIcon />
+									Eliminar Producto
+								</MenuItem>
+						}
+					/>
 				)
 			}
 		</ActionMenu>

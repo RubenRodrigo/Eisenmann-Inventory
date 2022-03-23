@@ -14,6 +14,7 @@ import { useLayout } from '@/hooks/useLayout';
 import axios from 'axios';
 import { deleteService } from 'src/services/service';
 import { useRouter } from 'next/router';
+import { DialogDelete } from '@/components/Dialog/DialogDelete';
 
 export const ActionService = () => {
 
@@ -105,8 +106,9 @@ export const ActionService = () => {
 					({ onClose }) => (
 						<div>
 							<MenuItem
+								disabled={!service.state}
 								onClick={() => {
-									handleOpenDialogProduct()
+									if (service.state) handleOpenDialogProduct()
 									onClose()
 								}}
 								disableRipple
@@ -114,20 +116,31 @@ export const ActionService = () => {
 								<AddIcon />
 								Añadir Producto
 							</MenuItem>
-							<MenuItem onClick={
-								() => {
+							<DialogDelete
+								title='Eliminar Servicio'
+								successAction={() => {
+									if (!service.state && service.service_product.length <= 0) {
+										handleDeleteService()
+									}
 									onClose()
-									handleDeleteService()
 								}}
-								disableRipple
-							>
-								<DeleteIcon />
-								Eliminar Servicio
-							</MenuItem>
+								cancelAction={onClose}
+								openButton={
+									(open, close) =>
+										<MenuItem
+											disabled={!(!service.state && service.service_product.length <= 0)}
+											onClick={open}
+											disableRipple
+										>
+											<DeleteIcon />
+											Eliminar Servicio
+										</MenuItem>
+								}
+							/>
 						</div>
 					)
 				}
 			</ActionMenu >
-		</div>
+		</div >
 	)
 }

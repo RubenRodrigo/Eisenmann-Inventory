@@ -8,21 +8,21 @@ export const headCellsService: readonly HeadCell<Service>[] = [
 		numeric: false,
 		disablePadding: false,
 		label: 'Nombre',
-		isAllowed: false,
+		isAllowed: true,
 	},
 	{
-		id: 'client',
+		id: 'client__name',
 		numeric: false,
 		disablePadding: false,
 		label: 'Cliente',
-		isAllowed: false,
+		isAllowed: true,
 	},
 	{
 		id: 'state',
 		numeric: false,
 		disablePadding: false,
 		label: 'Estado',
-		isAllowed: false,
+		isAllowed: true,
 		isAction: true
 	},
 	{

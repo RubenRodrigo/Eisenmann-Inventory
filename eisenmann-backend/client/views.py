@@ -11,6 +11,7 @@ from client.serializers import ClientSerializer, DocumentTypeSerializer
 
 
 class DocumentTypeViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     serializer_class = DocumentTypeSerializer
     queryset = DocumentType.objects.all()
 
@@ -19,3 +20,4 @@ class ClientViewSet(viewsets.ModelViewSet):
     pagination_class = None
     serializer_class = ClientSerializer
     queryset = Client.objects.all()
+    ordering = ['-created_at']

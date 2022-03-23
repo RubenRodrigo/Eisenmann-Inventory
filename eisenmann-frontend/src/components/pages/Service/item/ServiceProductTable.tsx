@@ -11,6 +11,7 @@ interface Props {
 }
 
 export const ServiceProductTable = ({ data }: Props) => {
+
 	return (
 		<Box sx={{ p: '2px 0px' }}>
 			<SimpleTableContainer

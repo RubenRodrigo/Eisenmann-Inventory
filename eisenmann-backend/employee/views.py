@@ -13,3 +13,4 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     serializer_class = EmployeeSerializer
     queryset = Employee.objects.all()
     pagination_class = None
+    ordering = ['-created_at']

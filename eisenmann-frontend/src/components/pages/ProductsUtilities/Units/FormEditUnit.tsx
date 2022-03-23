@@ -9,7 +9,7 @@ import { Box, Button, Grid } from '@mui/material';
 import { MyInput } from '@/components/Inputs/MyInput';
 import { useLayout } from '@/hooks/useLayout';
 import { ProductUnit, ProductUnitBase } from '@/interfaces/ProductUnit';
-import { createProductUnit, editProductUnit } from 'src/services/product-unit';
+import { editProductUnit } from 'src/services/product-unit';
 import { useDialog } from '@/hooks/useDialog';
 import { useProductUnitTable } from '@/reducer/ProductUnitTableReducer/hooks/useProductUnitTable';
 

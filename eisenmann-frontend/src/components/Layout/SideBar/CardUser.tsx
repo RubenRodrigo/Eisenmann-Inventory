@@ -1,5 +1,6 @@
 import { Avatar, Card, CardHeader } from '@mui/material';
 import { alpha } from '@mui/material/styles';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 
 function stringToColor(string: string) {
@@ -23,15 +24,17 @@ function stringToColor(string: string) {
 }
 
 function stringAvatar(name: string) {
+	const nameSplit = name.split(' ')
 	return {
 		sx: {
 			bgcolor: stringToColor(name),
 		},
-		children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+		children: `${nameSplit[0][0]}${nameSplit.length > 1 && nameSplit[1][0]}`,
 	};
 }
 
 export const CardUser = () => {
+	const { data: session, status } = useSession()
 	return (
 		<Card
 			elevation={0}
@@ -40,25 +43,28 @@ export const CardUser = () => {
 				backgroundColor: alpha(theme.palette.secondary.main, 0.08),
 			})}
 		>
-			<CardHeader
-				avatar={
-					<Avatar {...stringAvatar('Kent Dodds')}>
-						K
-					</Avatar>
-				}
-				title="Kent Dodds"
-				subheader="September 14, 2016"
-				titleTypographyProps={{
-					fontWeight: 'bold',
-					color: 'secondary.light',
-					whiteSpace: 'pre-line'
-				}}
-				subheaderTypographyProps={{
-					color: 'secondary.main',
-					whiteSpace: 'pre-line'
-				}}
+			{
+				session &&
+				<CardHeader
+					avatar={
+						<Avatar {...stringAvatar('Kent Dodds')}>
+							K
+						</Avatar>
+					}
+					title="Kent Dodds"
+					subheader="September 14, 2016"
+					titleTypographyProps={{
+						fontWeight: 'bold',
+						color: 'secondary.light',
+						whiteSpace: 'pre-line'
+					}}
+					subheaderTypographyProps={{
+						color: 'secondary.main',
+						whiteSpace: 'pre-line'
+					}}
 
-			/>
+				/>
+			}
 		</Card>
 	);
 };

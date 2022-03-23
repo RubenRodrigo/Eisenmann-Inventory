@@ -9,6 +9,7 @@ type ServiceContextProps = {
 	loadService: (value: ServiceDetail) => void
 	addServiceProduct: (value: ServiceProduct) => void
 	updateSummaryValues: () => void
+	removeServiceProduct: (id: number) => void
 }
 
 export const ServiceContext = createContext<ServiceContextProps>({} as ServiceContextProps);

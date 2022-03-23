@@ -14,6 +14,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { FormCreateProductEntry } from './ProductEntry/FormCreateProductEntry';
 import { FormSetRealStock } from '../forms/realStock/FormSetRealStock';
 import { useProductStock } from '@/reducer/ProductStockReducer/hooks/useProductStock';
+import { DialogDelete } from '@/components/Dialog/DialogDelete';
 
 export const ActionProductStock = () => {
 
@@ -144,16 +145,24 @@ export const ActionProductStock = () => {
 								<AddIcon />
 								Añadir Entrada
 							</MenuItem>
-							<MenuItem onClick={
-								() => {
+							<DialogDelete
+								title='Eliminar Producto Stock'
+								successAction={() => {
 									handleDeleteProductStock()
 									onClose()
 								}}
-								disableRipple
-							>
-								<DeleteIcon />
-								Eliminar Producto Stock
-							</MenuItem>
+								cancelAction={onClose}
+								openButton={
+									(open, close) =>
+										<MenuItem
+											onClick={open}
+											disableRipple
+										>
+											<DeleteIcon />
+											Eliminar Producto Stock
+										</MenuItem>
+								}
+							/>
 						</div>
 					)
 				}

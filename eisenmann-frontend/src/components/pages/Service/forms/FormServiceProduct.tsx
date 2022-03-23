@@ -34,6 +34,7 @@ export const FormServiceProduct = ({ service, saveData }: Props) => {
 			}}
 			validationSchema={Yup.object({
 				quantity: Yup.number()
+					.min(1, 'La cantidad debe ser mayor a 0')
 					.required('Este campo no puede estar vacio'),
 				product_stock: Yup.object()
 					.required('Debe escoger un producto')
