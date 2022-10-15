@@ -43,7 +43,6 @@ urlpatterns = [
     path('api/client/', include('client.urls')),
     path('api/employee/', include('employee.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     re_path(
         r'^swagger(?P<format>\.json|\.yaml)$',

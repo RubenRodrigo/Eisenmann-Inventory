@@ -11,5 +11,9 @@ router = DefaultRouter()
 router.register(r'user', views.UserViewSet, basename='user')
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('token/', views.MyTokenObtainPairView.as_view(),
+         name='token_obtain_pair'),  # Get Token - SignIn
+    path('signout/blacklist/', views.BlacklistTokenUpdateView.as_view(),
+         name='blacklist'),
 ]
