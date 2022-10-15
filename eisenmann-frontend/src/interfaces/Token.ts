@@ -1,9 +1,10 @@
-export interface TokenDec {
+import { UserProfile } from "./User";
+
+export interface TokenDec extends UserProfile {
 	token_type: string;
 	exp: number;
 	iat: number;
 	jti: string;
-	user_id: number;
 }
 
 export interface TokenAPI {

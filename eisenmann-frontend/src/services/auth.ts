@@ -8,7 +8,7 @@ interface GetAccessTokenProps {
 }
 
 export const getAccessToken = async ({ credentials }: GetAccessTokenProps) => {
-	return await axiosInstanceServerSide().post('/token/',
+	return await axiosInstanceServerSide().post('/user/token/',
 		{
 			email: credentials.email,
 			password: credentials.password,
@@ -21,10 +21,13 @@ interface GetRefreshTokenProps {
 }
 
 export const getRefreshToken = async ({ refreshToken }: GetRefreshTokenProps) => {
-	return await axiosInstanceServerSide().post('/token/refresh/',
-		{
-			refresh: refreshToken,
-		}
-	)
+	return await axiosInstanceServerSide().post('/token/refresh/', {
+		refresh: refreshToken,
+	})
 }
 
+export const postSignOut = async ({ refreshToken }: GetRefreshTokenProps) => {
+	return await axiosInstanceServerSide().post('/user/signout/blacklist/', {
+		refresh: refreshToken,
+	})
+}

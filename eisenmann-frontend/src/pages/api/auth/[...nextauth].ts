@@ -3,7 +3,7 @@ import axios from "axios";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import jwt from 'jsonwebtoken';
-import { getAccessToken, getRefreshToken } from "src/services/tokens";
+import { getAccessToken, getRefreshToken } from "src/services/auth";
 import { TokenAPI, TokenDec } from "@/interfaces/Token";
 import { JWT } from "next-auth/jwt";
 
@@ -104,14 +104,15 @@ export const authOptions: NextAuthOptions = {
 
             if (user && account) {
                 const UserCredentials = user.data
-                const dec: any = jwt.decode(UserCredentials.access, { complete: true });
-                const payload: TokenDec = dec.payload as TokenDec
+                const dec = jwt.decode(UserCredentials.access, { complete: true });
+                const payload: TokenDec = dec?.payload as TokenDec
                 console.log(payload.exp);
-                token.accessToken = UserCredentials.access
-                token.refreshToken = UserCredentials.refresh
-                token.accessTokenExpires = payload.exp
-                token.userId = payload.user_id
-                token.tokenType = payload.token_type
+                token = {
+                    ...payload,
+                    accessToken: UserCredentials.access,
+                    refreshToken: UserCredentials.refresh,
+                    accessTokenExpires: payload.exp
+                }
                 return token
             }
             const now = Math.ceil(Date.now() / 1000);
@@ -137,7 +138,15 @@ export const authOptions: NextAuthOptions = {
             session.accessTokenExpires = token.accessTokenExpires
 
             session.user = {
-                'id': token.userId as number
+                user_id: token.user_id,
+                first_name: token.first_name,
+                last_name: token.last_name,
+                date_joined: token.date_joined,
+                email: token.email,
+                username: token.username,
+                is_staff: token.is_staff,
+                is_active: token.is_active,
+                is_superuser: token.is_superuser,
             }
 
             // console.log("180 - Session", token);

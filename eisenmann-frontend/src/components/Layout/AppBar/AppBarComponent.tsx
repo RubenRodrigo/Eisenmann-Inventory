@@ -4,7 +4,8 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { Button, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import { postSignOut } from 'src/services/auth';
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -48,6 +49,19 @@ interface Props {
 }
 
 export const AppBarComponent = ({ drawerWidth, handleDrawerOpen, open }: Props) => {
+
+	const { data: session, status } = useSession()
+	const handleSignOut = async () => {
+		try {
+			const res = await postSignOut({ refreshToken: session?.refreshToken ?? '' })
+			if (res.status === 205) {
+				signOut()
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	return (
 		<AppBar
 			position="fixed"
@@ -66,7 +80,7 @@ export const AppBarComponent = ({ drawerWidth, handleDrawerOpen, open }: Props) 
 				</Typography>
 				<Button
 					color="inherit"
-					onClick={() => signOut()}
+					onClick={handleSignOut}
 				>
 					Logout
 				</Button>

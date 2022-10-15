@@ -1,5 +1,6 @@
 import { Avatar, Card, CardHeader } from '@mui/material';
 import { alpha } from '@mui/material/styles';
+import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
@@ -35,6 +36,7 @@ function stringAvatar(name: string) {
 
 export const CardUser = () => {
 	const { data: session, status } = useSession()
+
 	return (
 		<Card
 			elevation={0}
@@ -47,12 +49,10 @@ export const CardUser = () => {
 				session &&
 				<CardHeader
 					avatar={
-						<Avatar {...stringAvatar('Kent Dodds')}>
-							K
-						</Avatar>
+						<Avatar {...stringAvatar(`${session.user.first_name} ${session.user.last_name} `)} />
 					}
-					title="Kent Dodds"
-					subheader="September 14, 2016"
+					title={`${session.user.first_name} ${session.user.last_name} `}
+					subheader={format(new Date(session.user.date_joined), "yyyy-MM-dd")}
 					titleTypographyProps={{
 						fontWeight: 'bold',
 						color: 'secondary.light',
