@@ -1,21 +1,13 @@
 from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+print(os.environ.get("DEBUG"))
+print(int(os.environ.get("DEBUG", default=0)))
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# Database
+# Database - PostgreSQL
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 # POSTGRESQL
 DATABASES = {
     'default': {
@@ -28,4 +20,7 @@ DATABASES = {
     }
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = os.environ.get('DJANGO_CORS_ALLOWED_ORIGINS').split(" ")
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
