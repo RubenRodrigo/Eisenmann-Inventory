@@ -1,5 +1,5 @@
-docker-compose down -v # Elimina todos los contenedores y sus volumenes # Peligroso
-docker-compose -f docker-compose.prod.yml down # Elimina los contenedores de este archivo
-docker-compose -f docker-compose.prod.yml up -d --build # Construye los contenedores
-docker-compose -f docker-compose.prod.yml exec backend python manage.py migrate --noinput # Migra la base de datos
-docker-compose -f docker-compose.prod.yml exec backend python manage.py collectstatic --no-input --clear # Recolecta los static files
+docker-compose up -d # Run application in detached mode - necessary
+docker-compose exec api python manage.py migrate # Migrate db - necessary
+docker-compose exec api python manage.py collectstatic --no-input --clear # Collect static files
+docker-compose exec api "YOUR_COMMAND" 
+docker-compose down -v # Delete all containers and volumes # Danger

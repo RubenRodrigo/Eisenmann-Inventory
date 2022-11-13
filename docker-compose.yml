@@ -1,25 +1,45 @@
 version: '3.7'
 
 services:
-  web:
-    build: ./eisenmann_inventory_backend
+  api:
+    build: ./eisenmann-backend
+    container_name: api
     command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./eisenmann_inventory_backend/:/usr/src/app/
     ports:
       - 8000:8000
     env_file:
-      - ./.env.dev
+      - ./eisenmann-backend/.env
+    volumes:
+      - ./eisenmann-backend/:/usr/src/app/
     depends_on:
-      - db
-  db:
+      - postgres
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    ports:
+      - 5555:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "${PGADMIN_DEFAULT_EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${PGADMIN_DEFAULT_PASSWORD}"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    restart: unless-stopped
+  postgres:
     image: postgres:12.0-alpine
+    container_name: postgres
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: "${POSTGRES_DB}"
+      PG_DATA: /var/lib/postgresql/data
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=eisenmann_django
-      - POSTGRES_PASSWORD=eisenmann_django
-      - POSTGRES_DB=eisenmann_django_prodv
+    restart: always
 
 volumes:
   postgres_data:
+  pgadmin-data:
