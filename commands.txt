@@ -1,5 +1,7 @@
 docker-compose up -d # Run application in detached mode - necessary
 docker-compose exec api python manage.py migrate # Migrate db - necessary
 docker-compose exec api python manage.py collectstatic --no-input --clear # Collect static files
+docker-compose exec api python manage.py createsuperuser 
+docker-compose logs -f api 
 docker-compose exec api "YOUR_COMMAND" 
 docker-compose down -v # Delete all containers and volumes # Danger
